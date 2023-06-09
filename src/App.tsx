@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react'
 import './App.css'
 import CurrentJob from './CurrentJob'
-import {allJobs, initialSkills} from './data'
+import {allJobs, initialSkills, skillNames} from './data'
 import {addSkillKnowledge, getNewSkills, getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {Job, Skill} from './types'
@@ -35,7 +35,7 @@ function App() {
   }
 
   const handleStudyClick = (skillName: string) => () => {
-    const newSkills = addSkillKnowledge(skills, skillName, 2)
+    const newSkills = addSkillKnowledge(skills, skillName, 10)
     setSkills(newSkills)
   }
 
@@ -72,9 +72,11 @@ function App() {
           <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
         </div>
         <div className="buttons">
-          <button onClick={handleStudyClick('sql')}>sql</button>
-          <button onClick={handleStudyClick('node')}>node</button>
-          <button onClick={handleStudyClick('python')}>python</button>
+          {skillNames.map(skillName => {
+            return (
+              <button onClick={handleStudyClick(skillName)}>{skillName}</button>
+            )
+          })}
         </div>
       </div>
       <WantAds

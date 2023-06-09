@@ -1,3 +1,4 @@
+import {unique} from "./logic"
 import {Job, Skill} from "./types"
 
 export const initialSkills: Skill[] = [
@@ -163,7 +164,18 @@ export const allJobs: Job[] = [
         knowledge: 50,
       },
     ],
-    qualificationThreshold: 60,
+    qualificationThreshold: 56,
     basePay: 175000,
   },
 ]
+
+export const skillNames: string[] = allJobs
+  .reduce((all: string[], job) => {
+    const skillNamesForJob = job.skills.map(skill => skill.name)
+    return [
+      ...all,
+      ...skillNamesForJob,
+    ]
+  }, [])
+  .filter(unique)
+  .sort()

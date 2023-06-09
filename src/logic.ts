@@ -1,5 +1,7 @@
 import {Job, Qualifications, Skill, SkillMatch} from "./types"
 
+export const unique = (v: any, i: number, a: any[]): boolean => i === a.indexOf(v)
+
 const getSkillIndex = (skills: Skill[], name: string): number => {
   return skills.findIndex((skill) => {
     return skill.name === name
@@ -28,7 +30,6 @@ export const getNewSkills = (
   skills: Skill[],
   job: Job | null,
 ): Skill[] => {
-
   const newSkills = job
     ? getNewSkillsFromJob(job, skills)
     : []
@@ -50,16 +51,18 @@ export const getNewSkills = (
   ]
 
   nextSkills = nextSkills.map(skill => {
-    const MAX_EXPERIENCE = 300
+    const MAX_EXPERIENCE = 100
     const GAIN_EXPERIENCE = 1
     const GAIN_KNOWLEDGE = 2
+    const LOSE_EXPERIENCE = 0.2
+    const LOSE_KNOWLEDGE = 1
     // degrade skills
     const jobSkill = job
       ? getSkillByName(job.skills, skill.name)
       : undefined
 
-    let nextKnowledge = Math.max(skill.knowledge - 1, 0)
-    let nextExperience = Math.max(skill.experience - 1, 0)
+    let nextKnowledge = Math.max(skill.knowledge - LOSE_KNOWLEDGE, 0)
+    let nextExperience = Math.max(skill.experience - LOSE_EXPERIENCE, 0)
 
     if (jobSkill !== undefined) {
       nextKnowledge = nextKnowledge <= jobSkill.knowledge
