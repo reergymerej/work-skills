@@ -12,14 +12,21 @@ const getJobSkill = (job: Job, name: string): SkillProps | undefined => {
   })
 }
 
-export const getNewSkills = (
-  skills: Skill[],
-  job: Job,
-): SkillProps[] => {
-  const newSkills = job.skills.filter(skill => {
-    const playerSkill = getPlayerSkill(skills, skill.name)
+const getNewSkillsFromJob = (job: Job, currentSkills: Skill[]) => {
+  return job.skills.filter(skill => {
+    const playerSkill = getPlayerSkill(currentSkills, skill.name)
     return playerSkill === undefined
   })
+}
+
+export const getNewSkills = (
+  skills: Skill[],
+  job: Job | null,
+): SkillProps[] => {
+
+  const newSkills = job
+    ? getNewSkillsFromJob(job, skills)
+    : []
 
   let nextSkills: Skill[] = []
   if (newSkills.length) {
@@ -42,7 +49,9 @@ export const getNewSkills = (
     const GAIN_EXPERIENCE = 1
     const GAIN_KNOWLEDGE = 2
     // degrade skills
-    const jobSkill = getJobSkill(job, skill.name)
+    const jobSkill = job
+      ? getJobSkill(job, skill.name)
+      : undefined
 
     let nextKnowledge = Math.max(skill.knowledge - 1, 0)
     let nextExperience = Math.max(skill.experience - 1, 0)
@@ -67,4 +76,17 @@ export const getNewSkills = (
   })
 
   return nextSkills
+}
+
+type Change = 1 | -1
+export const loop = (
+  current: number,
+  change: Change,
+  max: number,
+): number =>  {
+  const next = current + change
+  if (next < 0) {
+    return max
+  }
+  return next % (max + 1)
 }

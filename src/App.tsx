@@ -4,6 +4,7 @@ import JobComp from './Job'
 import {getNewSkills} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {Job, Skill} from './types'
+import WantAds from './WantAds'
 
 
 const initialSkills: Skill[] = [
@@ -165,10 +166,8 @@ const jobs: Job[] = [
 
 function App() {
   const [skills, setSkills] = useState<Skill[]>(initialSkills)
-  const [jobIndex, setJobIndex] = useState<number>(0)
   const [running, setRunning] = useState(false)
-
-  const job = jobs[jobIndex]
+  const [job, setJob] = useState<Job | null>(null)
 
   const next = useCallback(() => {
     const newSkills = getNewSkills(skills, job)
@@ -184,12 +183,8 @@ function App() {
     setRunning(!running)
   }
 
-  const handleNextJob = () => {
-    const nextIndex = jobIndex + 1
-    setJobIndex(nextIndex >= jobs.length
-      ? 0
-      : nextIndex
-     )
+  const handleNewJob = (job: Job) => {
+    setJob(job)
   }
 
   useEffect(() => {
@@ -209,12 +204,18 @@ function App() {
       <div className="controls">
         <button onClick={handleClick}>next</button>
         <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
-        <button onClick={handleNextJob}>next job</button>
       </div>
       <div className="stage">
         <SkillSetComp skills={skills} />
-        <JobComp job={job} />
+        {job
+          ?  <JobComp job={job} />
+          : null
+        }
       </div>
+      <WantAds
+        jobs={jobs}
+        onNewJob={handleNewJob}
+      />
     </div>
   )
 }
