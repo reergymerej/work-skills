@@ -125,6 +125,41 @@ const jobs: Job[] = [
       },
     ],
   },
+  {
+    name: 'data engineer',
+    skills: [
+      {
+        experience: 20,
+        name: 'spark',
+        knowledge: 30,
+      },
+      {
+        experience: 20,
+        name: 'aws',
+        knowledge: 40,
+      },
+      {
+        experience: 30,
+        name: 'docker',
+        knowledge: 50,
+      },
+      {
+        experience: 20,
+        name: 'k8s',
+        knowledge: 30,
+      },
+      {
+        experience: 20,
+        name: 'sql',
+        knowledge: 50,
+      },
+      {
+        experience: 30,
+        name: 'python',
+        knowledge: 50,
+      },
+    ],
+  },
 ]
 
 
@@ -171,12 +206,14 @@ function App() {
 
   return (
     <div className="App">
-      <SkillSetComp skills={skills} />
-      <JobComp job={job} />
-      <div>
+      <div className="controls">
         <button onClick={handleClick}>next</button>
         <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
         <button onClick={handleNextJob}>next job</button>
+      </div>
+      <div className="stage">
+        <SkillSetComp skills={skills} />
+        <JobComp job={job} />
       </div>
     </div>
   )

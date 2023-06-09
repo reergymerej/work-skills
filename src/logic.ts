@@ -38,6 +38,9 @@ export const getNewSkills = (
   ]
 
   nextSkills = nextSkills.map(skill => {
+    const MAX_EXPERIENCE = 300
+    const GAIN_EXPERIENCE = 1
+    const GAIN_KNOWLEDGE = 2
     // degrade skills
     const jobSkill = getJobSkill(job, skill.name)
 
@@ -46,15 +49,21 @@ export const getNewSkills = (
 
     if (jobSkill !== undefined) {
       nextKnowledge = nextKnowledge <= jobSkill.knowledge
-        ? nextKnowledge + 2
+        ? nextKnowledge + GAIN_KNOWLEDGE
         : nextKnowledge
-      nextExperience = Math.min(skill.experience + 3, 600)
+      nextExperience = Math.min(
+        skill.experience + GAIN_EXPERIENCE,
+        MAX_EXPERIENCE
+      )
     }
     return {
       ...skill,
       knowledge: nextKnowledge,
       experience: nextExperience,
     }
+  })
+  .filter(skill => {
+    return skill.experience > 0 || skill.knowledge > 0
   })
 
   return nextSkills
