@@ -1,13 +1,13 @@
 import {useState} from "react"
 import JobComp from "./Job"
-import {loop} from "./logic"
-import {Job} from "./types"
+import {getQualifications, isQualified, loop} from "./logic"
+import {Job, Qualifications, Skill} from "./types"
 
 type WantAdsProps = {
   jobs: Job[],
   onNewJob: (job: Job) => void,
+  skills: Skill[],
 }
-
 
 const WantAds = (props: WantAdsProps) => {
   const [jobIndex, setJobIndex] = useState<number>(0)
@@ -20,11 +20,11 @@ const WantAds = (props: WantAdsProps) => {
     setJobIndex(loop(jobIndex, -1, props.jobs.length - 1))
   }
   const handleApply = () => {
-    const isQualified = true
-    if (isQualified) {
+    if (isQualified( props.skills, job)) {
       props.onNewJob(job)
     }
   }
+
   return (
     <div className="WantAds">
       <h2>
@@ -36,7 +36,10 @@ const WantAds = (props: WantAdsProps) => {
         <button onClick={handleNextJob}>next</button>
       </div>
       <div>
-        <JobComp job={job} />
+        <JobComp
+          job={job}
+          qualifications={getQualifications(props.skills, job)}
+        />
       </div>
     </div>
   )

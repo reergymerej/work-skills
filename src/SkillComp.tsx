@@ -1,6 +1,8 @@
-import {SkillProps} from "./types"
+import {Skill} from "./types"
 
-const Skill = (props: SkillProps) => {
+type SkillCompProps = Skill
+
+const SkillComp = (props: SkillCompProps) => {
   return (
         <div className="Skill">
           <div className="name">
@@ -22,4 +24,4 @@ const Skill = (props: SkillProps) => {
   )
 }
 
-export default Skill
+export default SkillComp

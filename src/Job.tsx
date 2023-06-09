@@ -1,11 +1,18 @@
 import SkillSetComp from "./SkillSetComp"
-import {JobCompProps} from "./types"
+import {Job, Qualifications} from "./types"
+
+type JobCompProps = {
+  job: Job,
+  qualifications: Qualifications,
+}
 
 const JobComp = (props: JobCompProps) => {
   return (
     <div className="Job">
       <div className="name">{props.job.name}</div>
-      <SkillSetComp skills={props.job.skills} />
+      <SkillSetComp
+        skills={props.job.skills}
+      />
     </div>
   )
 }

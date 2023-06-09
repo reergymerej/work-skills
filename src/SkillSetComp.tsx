@@ -1,6 +1,9 @@
-import Skill from "./Skill"
-import {SkillSetProps} from "./types"
+import SkillComp from "./SkillComp"
+import {Skill} from "./types"
 
+type SkillSetProps = {
+  skills: Skill[],
+}
 
 const SkillSetComp = (props: SkillSetProps) => {
   return (
@@ -16,7 +19,7 @@ const SkillSetComp = (props: SkillSetProps) => {
         })
         .map((skill) => {
         return (
-          <Skill
+          <SkillComp
             key={skill.name}
             name={skill.name}
             experience={skill.experience}

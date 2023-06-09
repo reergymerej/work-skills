@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from 'react'
 import './App.css'
-import JobComp from './Job'
+import CurrentJob from './CurrentJob'
 import {getNewSkills} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {Job, Skill} from './types'
@@ -206,15 +206,19 @@ function App() {
         <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
       </div>
       <div className="stage">
-        <SkillSetComp skills={skills} />
-        {job
-          ?  <JobComp job={job} />
-          : null
-        }
+        <div>
+          <h2>Your Skills</h2>
+          <SkillSetComp skills={skills} />
+        </div>
+        <CurrentJob
+          skills={skills}
+          job={job}
+        />
       </div>
       <WantAds
         jobs={jobs}
         onNewJob={handleNewJob}
+        skills={skills}
       />
     </div>
   )

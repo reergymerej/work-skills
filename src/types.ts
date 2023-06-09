@@ -1,4 +1,8 @@
-export type Job = SkillSetProps & {
+export type SkillSet = {
+  skills: Skill[],
+}
+
+export type Job = SkillSet & {
   name: string,
 }
 
@@ -8,13 +12,10 @@ export type Skill = {
   knowledge: number
 }
 
-export type SkillProps = Skill
-
-export type SkillSetProps = {
-  skills: SkillProps[],
+export type SkillMatch = {
+  experience: number,
+  knowledge: number,
+  name: string,
 }
 
-export type JobCompProps = {
-  job: Job,
-}
-
+export type Qualifications = SkillMatch[]

@@ -1,4 +1,4 @@
-import {Job, Skill, SkillProps} from "./types"
+import {Job, Qualifications, Skill, SkillMatch} from "./types"
 
 const getPlayerSkill = (skills: Skill[], name: string): Skill | undefined => {
   return skills.find(skill => {
@@ -6,7 +6,7 @@ const getPlayerSkill = (skills: Skill[], name: string): Skill | undefined => {
   })
 }
 
-const getJobSkill = (job: Job, name: string): SkillProps | undefined => {
+const getJobSkill = (job: Job, name: string): Skill | undefined => {
   return job.skills.find(skill => {
     return skill.name === name
   })
@@ -22,7 +22,7 @@ const getNewSkillsFromJob = (job: Job, currentSkills: Skill[]) => {
 export const getNewSkills = (
   skills: Skill[],
   job: Job | null,
-): SkillProps[] => {
+): Skill[] => {
 
   const newSkills = job
     ? getNewSkillsFromJob(job, skills)
@@ -90,3 +90,55 @@ export const loop = (
   }
   return next % (max + 1)
 }
+
+// Get rating to quantify how closely an applicant's skill matches.
+const getSkillMatch = (
+  applicantSkill: Skill | undefined,
+  jobSkill: Skill,
+): SkillMatch => {
+  let knowledgeRatio = applicantSkill
+    ? applicantSkill.knowledge / jobSkill.knowledge
+    : 0
+  let experienceRatio = applicantSkill
+    ? applicantSkill.experience / jobSkill.experience
+    : 0
+  if (knowledgeRatio === Infinity) {
+    knowledgeRatio = 1
+  }
+  if (experienceRatio === Infinity) {
+    experienceRatio = 1
+  }
+  return {
+    experience: experienceRatio,
+    knowledge: knowledgeRatio,
+    name: jobSkill.name,
+  }
+}
+
+
+
+// See how a set of skills stack up against a job's skills.
+export const getQualifications = (
+  skills: Skill[],
+  job: Job,
+): Qualifications => {
+  return job.skills.map(jobSkill => {
+    const applicantSkill = getPlayerSkill(skills, jobSkill.name)
+    const skillMatch = getSkillMatch(applicantSkill, jobSkill)
+    return {
+      name: jobSkill.name,
+      knowledge: skillMatch.knowledge,
+      experience: skillMatch.experience,
+    }
+  })
+}
+
+export const isQualified = (
+  skills: Skill[],
+  job: Job,
+): boolean => {
+  // for each job skill
+  // how does the applicant's skills compare?
+  return true
+}
+
