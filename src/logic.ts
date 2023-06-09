@@ -1,22 +1,27 @@
 import {Job, Qualifications, Skill, SkillMatch} from "./types"
 
-const getPlayerSkill = (skills: Skill[], name: string): Skill | undefined => {
+const getSkillIndex = (skills: Skill[], name: string): number => {
+  return skills.findIndex((skill) => {
+    return skill.name === name
+  })
+}
+
+const getSkillByName = (skills: Skill[], name: string): Skill | undefined => {
   return skills.find(skill => {
     return skill.name === name
   })
 }
 
-const getJobSkill = (job: Job, name: string): Skill | undefined => {
-  return job.skills.find(skill => {
-    return skill.name === name
+
+const getMissingSkills = (skills: Skill[], currentSkills: Skill[]): Skill[] => {
+  return skills.filter(skill => {
+    const playerSkill = getSkillByName(currentSkills, skill.name)
+    return playerSkill === undefined
   })
 }
 
 const getNewSkillsFromJob = (job: Job, currentSkills: Skill[]) => {
-  return job.skills.filter(skill => {
-    const playerSkill = getPlayerSkill(currentSkills, skill.name)
-    return playerSkill === undefined
-  })
+  return getMissingSkills(job.skills, currentSkills)
 }
 
 export const getNewSkills = (
@@ -50,7 +55,7 @@ export const getNewSkills = (
     const GAIN_KNOWLEDGE = 2
     // degrade skills
     const jobSkill = job
-      ? getJobSkill(job, skill.name)
+      ? getSkillByName(job.skills, skill.name)
       : undefined
 
     let nextKnowledge = Math.max(skill.knowledge - 1, 0)
@@ -117,7 +122,7 @@ export const getQualifications = (
   job: Job,
 ): Qualifications => {
   return job.skills.map(jobSkill => {
-    const applicantSkill = getPlayerSkill(skills, jobSkill.name)
+    const applicantSkill = getSkillByName(skills, jobSkill.name)
     const skillMatch = getSkillMatch(applicantSkill, jobSkill)
     return {
       name: jobSkill.name,
@@ -145,3 +150,25 @@ export const isQualified = (
   return qualificationRating >= job.qualificationThreshold
 }
 
+export const addSkillKnowledge = (skills: Skill[], name: string, value: number): Skill[] => {
+  const skillIndex = getSkillIndex(skills, name)
+  if (skillIndex === -1) {
+    return [
+      ...skills,
+      {
+        name,
+        knowledge: value,
+        experience: 0,
+      },
+    ]
+  }
+  return skills.map((skill, index) => {
+    if (index === skillIndex) {
+      return {
+        ...skill,
+        knowledge: skill.knowledge + value,
+      }
+    }
+    return skill
+  })
+}

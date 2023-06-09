@@ -104,7 +104,7 @@ export const allJobs: Job[] = [
         knowledge: 40,
       },
     ],
-    qualificationThreshold: 50,
+    qualificationThreshold: 80,
     basePay: 75000,
   },
   {

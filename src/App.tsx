@@ -2,7 +2,7 @@ import {useCallback, useEffect, useState} from 'react'
 import './App.css'
 import CurrentJob from './CurrentJob'
 import {allJobs, initialSkills} from './data'
-import {getNewSkills, getQualifications} from './logic'
+import {addSkillKnowledge, getNewSkills, getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {Job, Skill} from './types'
 import WantAds from './WantAds'
@@ -34,6 +34,11 @@ function App() {
     setJob(job)
   }
 
+  const handleStudyClick = (skillName: string) => () => {
+    const newSkills = addSkillKnowledge(skills, skillName, 2)
+    setSkills(newSkills)
+  }
+
   useEffect(() => {
     if (running) {
       const INTERVAL_TIME = 100
@@ -62,8 +67,15 @@ function App() {
         />
       </div>
       <div className="controls">
-        <button onClick={handleClick}>next</button>
-        <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
+        <div className="buttons">
+          <button onClick={handleClick}>next</button>
+          <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
+        </div>
+        <div className="buttons">
+          <button onClick={handleStudyClick('sql')}>sql</button>
+          <button onClick={handleStudyClick('node')}>node</button>
+          <button onClick={handleStudyClick('python')}>python</button>
+        </div>
       </div>
       <WantAds
         jobs={jobs}

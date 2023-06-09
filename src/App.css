@@ -49,6 +49,9 @@ small {
 
 .controls {
   padding: 1em;
+}
+
+.buttons {
   display: flex;
   justify-content: center;
 }

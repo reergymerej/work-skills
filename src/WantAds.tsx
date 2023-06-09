@@ -20,8 +20,9 @@ const WantAds = (props: WantAdsProps) => {
     setJobIndex(loop(jobIndex, -1, props.jobs.length - 1))
   }
   const qualifications = getQualifications(props.skills, job)
+  const canApply = isQualified(props.skills, job)
   const handleApply = () => {
-    if (isQualified( props.skills, job)) {
+    if (canApply) {
       props.onNewJob(job)
     }
   }
@@ -32,9 +33,11 @@ const WantAds = (props: WantAdsProps) => {
         want ads
       </h2>
       <div className="controls">
-        <button onClick={handlePrevJob}>prev</button>
-        <button onClick={handleApply}>apply</button>
-        <button onClick={handleNextJob}>next</button>
+        <div className="buttons">
+          <button onClick={handlePrevJob}>prev</button>
+          <button onClick={handleApply} disabled={!canApply}>apply</button>
+          <button onClick={handleNextJob}>next</button>
+        </div>
       </div>
       <div>
         <JobComp
