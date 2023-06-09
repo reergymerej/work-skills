@@ -16,7 +16,6 @@
 .Skill .value {
   height: 1.5em;
   line-height: 1.5em;
-  margin-bottom: 0.5em;
 }
 
 .Skill .value.experience {
@@ -36,10 +35,16 @@
   background: #6d6d6d33;
 }
 
-.Job > .name {
-  font-weight: bold;
+.Job .info {
+  margin-bottom: 1em;
+}
+
+.Job .info .name {
   font-size: 2em;
-  margin-bottom: 0.5em;
+}
+
+small {
+  font-size: 0.75em;
 }
 
 .controls {

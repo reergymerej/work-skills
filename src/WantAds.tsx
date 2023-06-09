@@ -1,7 +1,7 @@
 import {useState} from "react"
 import JobComp from "./Job"
 import {getQualifications, isQualified, loop} from "./logic"
-import {Job, Qualifications, Skill} from "./types"
+import {Job, Skill} from "./types"
 
 type WantAdsProps = {
   jobs: Job[],
@@ -19,6 +19,7 @@ const WantAds = (props: WantAdsProps) => {
   const handlePrevJob = () => {
     setJobIndex(loop(jobIndex, -1, props.jobs.length - 1))
   }
+  const qualifications = getQualifications(props.skills, job)
   const handleApply = () => {
     if (isQualified( props.skills, job)) {
       props.onNewJob(job)
@@ -38,7 +39,7 @@ const WantAds = (props: WantAdsProps) => {
       <div>
         <JobComp
           job={job}
-          qualifications={getQualifications(props.skills, job)}
+          qualifications={qualifications}
         />
       </div>
     </div>

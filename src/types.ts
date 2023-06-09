@@ -4,6 +4,8 @@ export type SkillSet = {
 
 export type Job = SkillSet & {
   name: string,
+  qualificationThreshold: number,
+  basePay: number,
 }
 
 export type Skill = {

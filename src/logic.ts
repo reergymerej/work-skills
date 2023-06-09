@@ -127,12 +127,21 @@ export const getQualifications = (
   })
 }
 
+export const getQualificationRating = (qualifications: Qualifications): number => {
+  const count = qualifications.length
+  const sum = qualifications.reduce((value: number, current): number => {
+    return value + current.experience + current.knowledge
+  }, 0)
+  return (sum / (count * 2)) * 100
+}
+
+
 export const isQualified = (
   skills: Skill[],
   job: Job,
 ): boolean => {
-  // for each job skill
-  // how does the applicant's skills compare?
-  return true
+  const qualifications = getQualifications(skills, job)
+  const qualificationRating = getQualificationRating(qualifications)
+  return qualificationRating >= job.qualificationThreshold
 }
 
