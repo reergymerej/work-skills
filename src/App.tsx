@@ -1,11 +1,12 @@
 import {useCallback, useEffect, useState} from 'react'
 import './App.css'
+import JobComp from './Job'
 import {getNewSkills} from './logic'
 import SkillSetComp from './SkillSetComp'
-import {Job, SkillProps} from './types'
+import {Job, Skill} from './types'
 
 
-const initialSkills: SkillProps[] = [
+const initialSkills: Skill[] = [
   {
     experience: 50,
     name: 'skill 1',
@@ -24,6 +25,7 @@ const initialSkills: SkillProps[] = [
 ]
 
 const initialJob: Job = {
+  name: 'job 1',
   skills: [
     {
       experience: 10,
@@ -35,12 +37,18 @@ const initialJob: Job = {
       name: 'skill 3',
       knowledge: 50,
     },
+    {
+      experience: 10,
+      name: 'skill 4',
+      knowledge: 20,
+    },
   ],
 }
 
+
 function App() {
-  const [skills, setSkills] = useState(initialSkills)
-  const [job, setJob] = useState(initialJob)
+  const [skills, setSkills] = useState<Skill[]>(initialSkills)
+  const [job, setJob] = useState<Job>(initialJob)
   const [running, setRunning] = useState(false)
 
   const next = useCallback(() => {
@@ -59,7 +67,7 @@ function App() {
 
   useEffect(() => {
     if (running) {
-      const INTERVAL_TIME = 500
+      const INTERVAL_TIME = 100
       const interval = setInterval(() => {
         next()
       }, INTERVAL_TIME)
@@ -72,10 +80,13 @@ function App() {
   return (
     <div className="App">
       <SkillSetComp skills={skills} />
-      <button onClick={handleClick}>next</button>
-      <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
+      <JobComp job={job} />
+      <div>
+        <button onClick={handleClick}>next</button>
+        <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
+      </div>
     </div>
-  );
+  )
 }
 
 export default App

@@ -1,4 +1,10 @@
-import {Job, SkillProps} from "./types"
+import {Job, Skill, SkillProps} from "./types"
+
+const getPlayerSkill = (skills: Skill[], name: string): Skill | undefined => {
+  return skills.find(skill => {
+    return skill.name === name
+  })
+}
 
 const getJobSkill = (job: Job, name: string): SkillProps | undefined => {
   return job.skills.find(skill => {
@@ -7,14 +13,34 @@ const getJobSkill = (job: Job, name: string): SkillProps | undefined => {
 }
 
 export const getNewSkills = (
-  skills: SkillProps[],
+  skills: Skill[],
   job: Job,
 ): SkillProps[] => {
-  return skills.map(skill => {
+  const newSkills = job.skills.filter(skill => {
+    const playerSkill = getPlayerSkill(skills, skill.name)
+    return playerSkill === undefined
+  })
+
+  let nextSkills: Skill[] = []
+  if (newSkills.length) {
+    nextSkills = newSkills.map(skill => {
+      return {
+        ...skill,
+        knowledge: 1,
+        experience: 1,
+      }
+    })
+  }
+
+  nextSkills = [
+    ...nextSkills,
+    ...skills,
+  ]
+
+  nextSkills = nextSkills.map(skill => {
+    // degrade skills
     const jobSkill = getJobSkill(job, skill.name)
 
-    // add skills per job
-    // degrade skills
     let nextKnowledge = Math.max(skill.knowledge - 1, 0)
     let nextExperience = Math.max(skill.experience - 1, 0)
 
@@ -24,13 +50,12 @@ export const getNewSkills = (
         : nextKnowledge
       nextExperience = Math.min(skill.experience + 3, 600)
     }
-
     return {
       ...skill,
       knowledge: nextKnowledge,
       experience: nextExperience,
     }
   })
+
+  return nextSkills
 }
-
-

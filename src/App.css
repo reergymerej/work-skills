@@ -1,5 +1,4 @@
 .Skill {
-  border-bottom: 1px solid black;
   margin-bottom: 1em;
   display: flex;
 }
@@ -23,4 +22,15 @@
 
 .Skill .value.knowledge {
   background: blue;
+}
+
+.Job {
+  padding: 1em;
+  background: #6d6d6d33;
+}
+
+.Job > .name {
+  font-weight: bold;
+  font-size: 2em;
+  margin-bottom: 0.5em;
 }
