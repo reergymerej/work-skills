@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useCallback, useEffect, useState} from 'react'
 import './App.css'
 
 type SkillProps = {
@@ -33,9 +33,11 @@ type SkillSetProps = {
   skills: SkillProps[],
 }
 
-const SkillSet = (props: SkillSetProps) => {
+type Job = SkillSetProps
+
+const SkillSetComp = (props: SkillSetProps) => {
   return (
-    <div className="SkillSet">
+    <div className="SkillSetComp">
       {props.skills.map((skill) => {
         return (
           <Skill
@@ -54,7 +56,7 @@ const initialSkills: SkillProps[] = [
   {
     experience: 50,
     name: 'skill 1',
-    knowledge: 30,
+    knowledge: 80,
   },
   {
     experience: 20,
@@ -68,35 +70,90 @@ const initialSkills: SkillProps[] = [
   },
 ]
 
+const getJobSkill = (job: Job, name: string): SkillProps | undefined => {
+  return job.skills.find(skill => {
+    return skill.name === name
+  })
+}
+
 const getNewSkills = (
   skills: SkillProps[],
+  job: Job,
 ): SkillProps[] => {
-  // add skills per job
-  // degrade skills
   return skills.map(skill => {
-    const nextKnowledge = Math.max(skill.knowledge - 1, 0)
-    const nextExperience = Math.max(skill.experience - 1, 0)
+    const jobSkill = getJobSkill(job, skill.name)
+
+    // add skills per job
+    // degrade skills
+    let nextKnowledge = Math.max(skill.knowledge - 1, 0)
+    let nextExperience = Math.max(skill.experience - 1, 0)
+
+    if (jobSkill !== undefined) {
+      nextKnowledge = nextKnowledge <= jobSkill.knowledge
+        ? nextKnowledge + 2
+        : nextKnowledge
+      nextExperience = Math.min(skill.experience + 3, 600)
+    }
+
     return {
       ...skill,
       knowledge: nextKnowledge,
       experience: nextExperience,
-
     }
   })
 }
 
+const initialJob: Job = {
+  skills: [
+    {
+      experience: 10,
+      name: 'skill 1',
+      knowledge: 40,
+    },
+    {
+      experience: 0,
+      name: 'skill 3',
+      knowledge: 50,
+    },
+  ],
+}
+
 function App() {
   const [skills, setSkills] = useState(initialSkills)
+  const [job, setJob] = useState(initialJob)
+  const [running, setRunning] = useState(false)
+
+  const next = useCallback(() => {
+    const newSkills = getNewSkills(skills, job)
+    setSkills(newSkills)
+  }, [skills, job])
+
 
   const handleClick = () => {
-    const newSkills = getNewSkills(skills)
-    setSkills(newSkills)
+    next()
   }
+
+  const handleRunClick = () => {
+    setRunning(!running)
+  }
+
+  useEffect(() => {
+    if (running) {
+      const INTERVAL_TIME = 500
+      const interval = setInterval(() => {
+        next()
+      }, INTERVAL_TIME)
+      return () => {
+        clearInterval(interval)
+      }
+    }
+  }, [next, running])
 
   return (
     <div className="App">
-      <SkillSet skills={skills} />
+      <SkillSetComp skills={skills} />
       <button onClick={handleClick}>next</button>
+      <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
     </div>
   );
 }
