@@ -12,6 +12,7 @@ const JobComp = (props: JobCompProps) => {
       <div className="name">{props.job.name}</div>
       <SkillSetComp
         skills={props.job.skills}
+        qualifications={props.qualifications}
       />
     </div>
   )

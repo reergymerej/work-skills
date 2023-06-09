@@ -96,21 +96,15 @@ const getSkillMatch = (
   applicantSkill: Skill | undefined,
   jobSkill: Skill,
 ): SkillMatch => {
-  let knowledgeRatio = applicantSkill
+  const knowledgeRatio = applicantSkill
     ? applicantSkill.knowledge / jobSkill.knowledge
     : 0
-  let experienceRatio = applicantSkill
+  const experienceRatio = applicantSkill
     ? applicantSkill.experience / jobSkill.experience
     : 0
-  if (knowledgeRatio === Infinity) {
-    knowledgeRatio = 1
-  }
-  if (experienceRatio === Infinity) {
-    experienceRatio = 1
-  }
   return {
-    experience: experienceRatio,
-    knowledge: knowledgeRatio,
+    experience: Math.min(experienceRatio, 1),
+    knowledge: Math.min(knowledgeRatio, 1),
     name: jobSkill.name,
   }
 }

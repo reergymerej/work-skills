@@ -5,6 +5,8 @@
 
 .Skill .name {
   width: 4em;
+  overflow: hidden;
+  margin-right: 0.5em;
 }
 
 .Skill .values {
@@ -12,7 +14,8 @@
 }
 
 .Skill .value {
-  height: 1em;
+  height: 1.5em;
+  line-height: 1.5em;
   margin-bottom: 0.5em;
 }
 
@@ -22,6 +25,10 @@
 
 .Skill .value.knowledge {
   background: blue;
+}
+
+.Skill .value.knowledge.ratio {
+  background: initial;
 }
 
 .Job {

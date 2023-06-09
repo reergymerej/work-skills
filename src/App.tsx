@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react'
 import './App.css'
 import CurrentJob from './CurrentJob'
-import {getNewSkills} from './logic'
+import {getNewSkills, getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {Job, Skill} from './types'
 import WantAds from './WantAds'
@@ -208,7 +208,10 @@ function App() {
       <div className="stage">
         <div>
           <h2>Your Skills</h2>
-          <SkillSetComp skills={skills} />
+          <SkillSetComp
+            skills={skills}
+            qualifications={job && getQualifications(skills, job)}
+          />
         </div>
         <CurrentJob
           skills={skills}

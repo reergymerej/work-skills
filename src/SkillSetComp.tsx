@@ -1,11 +1,13 @@
 import SkillComp from "./SkillComp"
-import {Skill} from "./types"
+import {Qualifications, Skill} from "./types"
 
 type SkillSetProps = {
   skills: Skill[],
+  qualifications: Qualifications | null,
 }
 
 const SkillSetComp = (props: SkillSetProps) => {
+  const qualifications = props.qualifications || []
   return (
     <div className="SkillSetComp">
       {props.skills
@@ -18,15 +20,17 @@ const SkillSetComp = (props: SkillSetProps) => {
           return 0
         })
         .map((skill) => {
-        return (
-          <SkillComp
-            key={skill.name}
-            name={skill.name}
-            experience={skill.experience}
-            knowledge={skill.knowledge}
-          />
-        )
-      })}
+          const skillMatch = qualifications.find(q => q.name === skill.name)
+          return (
+            <SkillComp
+              key={skill.name}
+              name={skill.name}
+              experience={skill.experience}
+              knowledge={skill.knowledge}
+              skillMatch={skillMatch}
+            />
+          )
+        })}
     </div>
   )
 }
