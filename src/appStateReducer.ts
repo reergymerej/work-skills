@@ -11,11 +11,16 @@ const jobReducer = (
   switch (action.type) {
     case 'jobSet':
       return action.value
-    case 'dayNext':
+    case 'dayNext': {
+      const duration = state && ((state.duration || Infinity) - 1)
+      if (duration === 0) {
+        return null
+      }
       return state && {
         ...state,
-        duration: state.duration || Infinity - 1,
+        duration,
       }
+    }
     default:
       return state
   }
