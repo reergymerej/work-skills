@@ -1,20 +1,91 @@
-import {useCallback, useEffect, useReducer, useState} from 'react'
+import {useCallback, useContext, useEffect, useReducer, useState} from 'react'
 import './App.css'
 import {AppContext, AppDispatchContext} from './AppContext'
 import {appStateReducer, initialAppState} from './appStateReducer'
 import CurrentJob from './CurrentJob'
-import {skillNames} from './data'
-import {addSkillKnowledge, getNewSkills, getQualifications} from './logic'
+import {getNewSkills, getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {loadSavedAppState, saveAppState} from './storage'
 import WantAds from './WantAds'
+import {addSkillKnowledge} from './logic'
+import {skillNames} from './data'
 
 
-const Status = () => {
+type AppControlsProps = {
+  saving: boolean,
+  onSave: () => void,
+}
+const AppControls = ({
+  saving,
+  onSave,
+}: AppControlsProps) => {
+  const dispatch = useContext(AppDispatchContext)
+  const handleReset = () => {
+    dispatch({
+      type: 'reset',
+    })
+  }
+  const handleSave = () => {
+    onSave()
+  }
+
   return (
-    <div className="Status">
-      status
+    <div className="AppControls">
+      <div className="buttons">
+        <button onClick={handleSave} disabled={saving}>save</button>
+        <button onClick={handleReset}>reset</button>
+      </div>
     </div>
+  )
+}
+
+type GameControlsProps = {
+  onNext: () => void,
+}
+const GameControls = ({
+  onNext,
+}: GameControlsProps) => {
+  const dispatch = useContext(AppDispatchContext)
+  const {
+    skills,
+    running,
+  } = useContext(AppContext)
+
+  const handleStudyClick = (skillName: string) => () => {
+    const newSkills = addSkillKnowledge(skills, skillName, 10)
+    dispatch({
+      type: 'skillsSet',
+      value: newSkills,
+    })
+  }
+
+  const handleNext = () => {
+    onNext()
+  }
+
+  const handleRunClick = () => {
+    dispatch({
+      type: 'runningToggle',
+    })
+  }
+
+
+  return (
+      <div className="GameControls">
+        <div className="buttons">
+          <button onClick={handleNext}>next</button>
+          <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
+        </div>
+        <div className="buttons">
+          {skillNames.map(skillName => {
+            return (
+              <button
+                key={skillName}
+                onClick={handleStudyClick(skillName)}>{skillName}</button>
+            )
+          })}
+        </div>
+      </div>
   )
 }
 
@@ -24,10 +95,8 @@ const App = () => {
   const [saving, setSaving] = useState<boolean>(false)
 
   const {
-    jobIndex,
     job,
     skills,
-    jobs,
     running,
   } = appState
 
@@ -42,36 +111,6 @@ const App = () => {
     })
   }, [job, skills])
 
-
-  const handleClick = () => {
-    next()
-  }
-
-  const handleRunClick = () => {
-    dispatch({
-      type: 'runningToggle',
-    })
-  }
-
-  const handleStudyClick = (skillName: string) => () => {
-    const newSkills = addSkillKnowledge(skills, skillName, 10)
-    dispatch({
-      type: 'skillsSet',
-      value: newSkills,
-    })
-  }
-
-  const handleSaveClick = () => {
-    setSaving(true)
-    saveAppState(appState)
-    setSaving(false)
-  }
-
-  const handleResetClick = () => {
-    dispatch({
-      type: 'reset',
-    })
-  }
 
   useEffect(() => {
     // load initial or saved state
@@ -99,6 +138,16 @@ const App = () => {
     }
   }, [next, running])
 
+  const handleSave = () => {
+    setSaving(true)
+    saveAppState(appState)
+    setSaving(false)
+  }
+
+  const handleNext = () => {
+    next()
+  }
+
   return (
     <AppContext.Provider value={appState}>
       <AppDispatchContext.Provider value={dispatch}>
@@ -107,7 +156,10 @@ const App = () => {
             ? <div>loading...</div>
             : (
               <>
-              <Status />
+              <AppControls
+                saving={saving}
+                onSave={handleSave}
+              />
               <div className="stage">
                 <div>
                   <h2>Your Skills</h2>
@@ -122,21 +174,9 @@ const App = () => {
                 />
               </div>
               <div className="controls">
-                <div className="buttons">
-                  <button onClick={handleClick}>next</button>
-                  <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
-                  <button onClick={handleSaveClick} disabled={saving}>save</button>
-                  <button onClick={handleResetClick}>reset</button>
-                </div>
-                <div className="buttons">
-                  {skillNames.map(skillName => {
-                    return (
-                      <button
-                        key={skillName}
-                        onClick={handleStudyClick(skillName)}>{skillName}</button>
-                    )
-                  })}
-                </div>
+                <GameControls
+                  onNext={handleNext}
+                />
               </div>
               <WantAds />
             </>
