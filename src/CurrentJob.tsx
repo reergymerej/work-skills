@@ -7,17 +7,20 @@ type CurrentJobProps = {
   job: Job | null,
 }
 
-const CurrentJob = (props: CurrentJobProps) => {
+const CurrentJob = ({
+  job,
+  skills,
+}: CurrentJobProps) => {
   return (
     <div>
       <h2>Current Job</h2>
-      {props.job
+      {job
         ? (
           <JobComp
-            job={props.job}
+            job={job}
             qualifications={getQualifications(
-              props.skills,
-              props.job,
+              skills,
+              job,
             )}
           />
         )

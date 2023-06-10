@@ -21,6 +21,7 @@ export const allJobs: Job[] = [
     ],
     qualificationThreshold: 0,
     basePay: 40000,
+    duration: Infinity,
   },
   {
     name: 'junior ui dev',
@@ -43,6 +44,7 @@ export const allJobs: Job[] = [
     ],
     qualificationThreshold: 38,
     basePay: 50000,
+    duration: Infinity,
   },
   {
     name: 'junior web dev',
@@ -75,6 +77,7 @@ export const allJobs: Job[] = [
     ],
     qualificationThreshold: 65,
     basePay: 50000,
+    duration: Infinity,
   },
   {
     name: 'web dev',
@@ -107,6 +110,7 @@ export const allJobs: Job[] = [
     ],
     qualificationThreshold: 80,
     basePay: 75000,
+    duration: Infinity,
   },
   {
     name: 'sr web dev (node)',
@@ -129,6 +133,7 @@ export const allJobs: Job[] = [
     ],
     qualificationThreshold: 60,
     basePay: 95000,
+    duration: Infinity,
   },
   {
     name: 'data engineer',
@@ -166,6 +171,7 @@ export const allJobs: Job[] = [
     ],
     qualificationThreshold: 56,
     basePay: 175000,
+    duration: Infinity,
   },
 ]
 

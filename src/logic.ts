@@ -105,14 +105,16 @@ const getSkillMatch = (
   jobSkill: Skill,
 ): SkillMatch => {
   const knowledgeRatio = applicantSkill
-    ? applicantSkill.knowledge / jobSkill.knowledge
+    ? applicantSkill.knowledge / Math.max(jobSkill.knowledge, 1)
     : 0
   const experienceRatio = applicantSkill
-    ? applicantSkill.experience / jobSkill.experience
+    ? applicantSkill.experience / Math.max(jobSkill.experience, 1)
     : 0
+  const experience = Math.min(experienceRatio, 1)
+  const knowledge = Math.min(knowledgeRatio, 1)
   return {
-    experience: Math.min(experienceRatio, 1),
-    knowledge: Math.min(knowledgeRatio, 1),
+    experience,
+    knowledge,
     name: jobSkill.name,
   }
 }

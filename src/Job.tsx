@@ -23,6 +23,9 @@ const JobComp = (props: JobCompProps) => {
           <div>
             qualification: {Math.trunc(qualificationRating)}
           </div>
+          <div>
+            duration: {props.job.duration + ''}
+          </div>
         </div>
       </div>
       <SkillSetComp

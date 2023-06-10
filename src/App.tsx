@@ -82,6 +82,7 @@ const App = () => {
                 saving={saving}
                 onSave={handleSave}
               />
+                <div>{appState.day}</div>
               <div className="stage">
                 <div>
                   <h2>Your Skills</h2>

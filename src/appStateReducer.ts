@@ -4,6 +4,23 @@ import {AppState, factoryAppState} from "./types"
 
 export const initialAppState: AppState = factoryAppState()
 
+const jobReducer = (
+  state: AppState['job'],
+  action: Action,
+): AppState['job'] => {
+  switch (action.type) {
+    case 'jobSet':
+      return action.value
+    case 'dayNext':
+      return state && {
+        ...state,
+        duration: state.duration || Infinity - 1,
+      }
+    default:
+      return state
+  }
+}
+
 export const appStateReducer = (
   state: AppState,
   action: Action,
@@ -27,12 +44,13 @@ export const appStateReducer = (
     case 'jobSet':
       return {
         ...state,
-        job: action.value,
+        job: jobReducer(state.job, action),
       }
     case 'dayNext':
       return {
         ...state,
         day: state.day + 1,
+        job: jobReducer(state.job, action),
       }
     case 'reset':
       return {
