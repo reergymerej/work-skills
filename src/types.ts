@@ -1,3 +1,5 @@
+import {allJobs, initialSkills} from "./data"
+
 export type SkillSet = {
   skills: Skill[],
 }
@@ -23,11 +25,21 @@ export type SkillMatch = {
 export type Qualifications = SkillMatch[]
 
 export type AppState = {
+  day: number,
+  job: Job | null,
+  jobs: Job[],
+  running: boolean,
+  skills: Skill[],
   time: number,
 }
 
 export const factoryAppState = (state: Partial<AppState> = {}): AppState => {
   return {
+    day: 0,
+    job: null,
+    jobs: allJobs,
+    running: false,
+    skills: initialSkills,
     time: Date.now(),
     ...state,
   }

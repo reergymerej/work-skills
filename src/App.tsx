@@ -1,34 +1,37 @@
-import {useCallback, useEffect, useState} from 'react'
+import {useCallback, useEffect, useReducer, useState} from 'react'
 import './App.css'
+import {appStateReducer, initialAppState} from './appStateReducer'
 import CurrentJob from './CurrentJob'
-import {allJobs, initialSkills, skillNames} from './data'
+import {skillNames} from './data'
 import {addSkillKnowledge, getNewSkills, getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {loadSavedAppState, saveAppState} from './storage'
-import {AppState, factoryAppState, Job, Skill} from './types'
+import {Job} from './types'
 import WantAds from './WantAds'
 
 
-
-
-
-
-const initialAppState: AppState = factoryAppState()
-
 const App = () => {
-  const [loaded, setLoaded] = useState<boolean>(false)
+  const [appState, dispatch] = useReducer(appStateReducer, initialAppState)
   const [loading, setLoading] = useState<boolean>(false)
-  const [appState, setAppState] = useState<AppState>(initialAppState)
+  const [saving, setSaving] = useState<boolean>(false)
 
-  const [skills, setSkills] = useState<Skill[]>(initialSkills)
-  const [jobs, setJobs] = useState<Job[]>(allJobs)
-  const [running, setRunning] = useState(false)
-  const [job, setJob] = useState<Job | null>(null)
+  const {
+    job,
+    skills,
+    jobs,
+    running,
+  } = appState
 
   const next = useCallback(() => {
     const newSkills = getNewSkills(skills, job)
-    setSkills(newSkills)
-  }, [skills, job])
+    dispatch({
+      type: 'skillsSet',
+      value: newSkills,
+    })
+    dispatch({
+      type: 'dayNext',
+    })
+  }, [job, skills])
 
 
   const handleClick = () => {
@@ -36,40 +39,51 @@ const App = () => {
   }
 
   const handleRunClick = () => {
-    setRunning(!running)
+    dispatch({
+      type: 'runningToggle',
+    })
   }
 
   const handleNewJob = (job: Job) => {
-    setJob(job)
+    dispatch({
+      type: 'jobSet',
+      value: job,
+    })
   }
 
   const handleStudyClick = (skillName: string) => () => {
     const newSkills = addSkillKnowledge(skills, skillName, 10)
-    setSkills(newSkills)
+    dispatch({
+      type: 'skillsSet',
+      value: newSkills,
+    })
+  }
+
+  const handleSaveClick = () => {
+    setSaving(true)
+    saveAppState(appState)
+    setSaving(false)
+  }
+
+  const handleResetClick = () => {
+    dispatch({
+      type: 'reset',
+    })
   }
 
   useEffect(() => {
     // load initial or saved state
-    if (!loaded && !loading) {
+    if (!loading) {
       setLoading(true)
-      setAppState(() => loadSavedAppState())
+      dispatch({
+        type: 'loaded',
+        value: loadSavedAppState(),
+      })
       setLoading(false)
-      setLoaded(true)
     }
   }, [
-    loaded,
     loading,
-    setAppState,
   ])
-
-  useEffect(() => {
-    // When setting the state for the first time, we are `loading`.  Ignore this
-    // first change.
-    if (!loading && !loaded) {
-      saveAppState(appState)
-      return
-    }
-  }, [loaded, loading, appState])
 
   useEffect(() => {
     if (running) {
@@ -89,41 +103,42 @@ const App = () => {
         ? <div>loading...</div>
         : (
           <>
-        <div>{JSON.stringify(appState)}</div>
-        <div className="stage">
-          <div>
-            <h2>Your Skills</h2>
-            <SkillSetComp
+          <div className="stage">
+            <div>
+              <h2>Your Skills</h2>
+              <SkillSetComp
+                skills={skills}
+                qualifications={job && getQualifications(skills, job)}
+              />
+            </div>
+            <CurrentJob
               skills={skills}
-              qualifications={job && getQualifications(skills, job)}
+              job={job}
             />
           </div>
-          <CurrentJob
+          <div className="controls">
+            <div className="buttons">
+              <button onClick={handleClick}>next</button>
+              <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
+              <button onClick={handleSaveClick} disabled={saving}>save</button>
+              <button onClick={handleResetClick}>reset</button>
+            </div>
+            <div className="buttons">
+              {skillNames.map(skillName => {
+                return (
+                  <button
+                    key={skillName}
+                    onClick={handleStudyClick(skillName)}>{skillName}</button>
+                )
+              })}
+            </div>
+          </div>
+          <WantAds
+            jobs={jobs}
+            onNewJob={handleNewJob}
             skills={skills}
-            job={job}
           />
-        </div>
-        <div className="controls">
-          <div className="buttons">
-            <button onClick={handleClick}>next</button>
-            <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
-          </div>
-          <div className="buttons">
-            {skillNames.map(skillName => {
-              return (
-                <button
-                  key={skillName}
-                  onClick={handleStudyClick(skillName)}>{skillName}</button>
-              )
-            })}
-          </div>
-        </div>
-        <WantAds
-          jobs={jobs}
-          onNewJob={handleNewJob}
-          skills={skills}
-        />
-          </>
+        </>
         )
       }
     </div>

@@ -3,6 +3,7 @@ import {AppState, factoryAppState} from "./types"
 const APP_ID = 'com.reergymerej.skills'
 
 export const saveAppState = (state: AppState): boolean => {
+  console.debug('saving app state')
   try {
     localStorage.setItem(APP_ID, JSON.stringify({
       ...state,
