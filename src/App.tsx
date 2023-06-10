@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useReducer, useState} from 'react'
+import {useCallback, useEffect, useReducer, useState} from 'react'
 import './App.css'
 import {AppContext, AppDispatchContext} from './AppContext'
 import {appStateReducer, initialAppState} from './appStateReducer'
@@ -7,87 +7,9 @@ import {getNewSkills, getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {loadSavedAppState, saveAppState} from './storage'
 import WantAds from './WantAds'
-import {addSkillKnowledge} from './logic'
-import {skillNames} from './data'
+import AppControls from './AppControls'
+import GameControls from './GameControls'
 
-
-type AppControlsProps = {
-  saving: boolean,
-  onSave: () => void,
-}
-const AppControls = ({
-  saving,
-  onSave,
-}: AppControlsProps) => {
-  const dispatch = useContext(AppDispatchContext)
-  const handleReset = () => {
-    dispatch({
-      type: 'reset',
-    })
-  }
-  const handleSave = () => {
-    onSave()
-  }
-
-  return (
-    <div className="AppControls">
-      <div className="buttons">
-        <button onClick={handleSave} disabled={saving}>save</button>
-        <button onClick={handleReset}>reset</button>
-      </div>
-    </div>
-  )
-}
-
-type GameControlsProps = {
-  onNext: () => void,
-}
-const GameControls = ({
-  onNext,
-}: GameControlsProps) => {
-  const dispatch = useContext(AppDispatchContext)
-  const {
-    skills,
-    running,
-  } = useContext(AppContext)
-
-  const handleStudyClick = (skillName: string) => () => {
-    const newSkills = addSkillKnowledge(skills, skillName, 10)
-    dispatch({
-      type: 'skillsSet',
-      value: newSkills,
-    })
-  }
-
-  const handleNext = () => {
-    onNext()
-  }
-
-  const handleRunClick = () => {
-    dispatch({
-      type: 'runningToggle',
-    })
-  }
-
-
-  return (
-      <div className="GameControls">
-        <div className="buttons">
-          <button onClick={handleNext}>next</button>
-          <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
-        </div>
-        <div className="buttons">
-          {skillNames.map(skillName => {
-            return (
-              <button
-                key={skillName}
-                onClick={handleStudyClick(skillName)}>{skillName}</button>
-            )
-          })}
-        </div>
-      </div>
-  )
-}
 
 const App = () => {
   const [appState, dispatch] = useReducer(appStateReducer, initialAppState)

@@ -1,0 +1,7 @@
+.AppControls {
+  display: flex;
+  justify-content: end;
+}
+
+.AppControls .buttons {
+}
