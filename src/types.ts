@@ -21,3 +21,14 @@ export type SkillMatch = {
 }
 
 export type Qualifications = SkillMatch[]
+
+export type AppState = {
+  time: number,
+}
+
+export const factoryAppState = (state: Partial<AppState> = {}): AppState => {
+  return {
+    time: Date.now(),
+    ...state,
+  }
+}
