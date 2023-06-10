@@ -1,37 +1,37 @@
+import {useContext} from "react"
+import {AppContext, AppDispatchContext} from "./AppContext"
 import JobComp from "./Job"
 import {getQualifications, isQualified} from "./logic"
-import {Job, Skill} from "./types"
 
-type WantAdsProps = {
-  jobs: Job[],
-  onNewJob: (job: Job) => void,
-  onNext: () => void,
-  onPrev: () => void,
-  skills: Skill[],
-  jobIndex: number,
-}
 
-const WantAds = ({
-  jobIndex,
-  jobs,
-  onNewJob,
-  onNext,
-  onPrev,
-  skills,
-}: WantAdsProps) => {
+const WantAds = () => {
+  const {
+    jobIndex,
+    jobs,
+    skills,
+  } = useContext(AppContext)
+  const dispatch = useContext(AppDispatchContext)
   const job = jobs[jobIndex]
 
   const handleNextJob = () => {
-    onNext()
+    dispatch({
+      type: 'wantAdNext',
+    })
   }
   const handlePrevJob = () => {
-    onPrev()
+    dispatch({
+      type: 'wantAdPrev',
+    })
   }
   const qualifications = getQualifications(skills, job)
   const canApply = isQualified(skills, job)
+
   const handleApply = () => {
     if (canApply) {
-      onNewJob(job)
+      dispatch({
+        type: 'jobSet',
+        value: job,
+      })
     }
   }
 
