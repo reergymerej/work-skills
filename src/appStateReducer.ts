@@ -1,4 +1,5 @@
 import {Action} from "./actions"
+import {loop} from "./logic"
 import {AppState, factoryAppState} from "./types"
 
 export const initialAppState: AppState = factoryAppState()
@@ -37,7 +38,17 @@ export const appStateReducer = (
       return {
         ...initialAppState,
       }
+    case 'wantAdNext':
+    case 'wantAdPrev':
+      return {
+        ...state,
+        jobIndex: loop(
+            state.jobIndex,
+            action.type === 'wantAdNext'
+            ? 1
+            : -1,
+            state.jobs.length - 1,
+        ),
+      }
   }
 }
-
-

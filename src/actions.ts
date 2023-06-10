@@ -27,6 +27,14 @@ type Reset = {
   type: 'reset',
 }
 
+type WantAdNext = {
+  type: 'wantAdNext',
+}
+
+type WantAdPrev = {
+  type: 'wantAdPrev',
+}
+
 
 export type Action =
   | DayNext
@@ -35,3 +43,5 @@ export type Action =
   | Reset
   | RunningToggle
   | SkillsSet
+  | WantAdNext
+  | WantAdPrev

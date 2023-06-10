@@ -1,29 +1,37 @@
-import {useState} from "react"
 import JobComp from "./Job"
-import {getQualifications, isQualified, loop} from "./logic"
+import {getQualifications, isQualified} from "./logic"
 import {Job, Skill} from "./types"
 
 type WantAdsProps = {
   jobs: Job[],
   onNewJob: (job: Job) => void,
+  onNext: () => void,
+  onPrev: () => void,
   skills: Skill[],
+  jobIndex: number,
 }
 
-const WantAds = (props: WantAdsProps) => {
-  const [jobIndex, setJobIndex] = useState<number>(0)
-  const job = props.jobs[jobIndex]
+const WantAds = ({
+  jobIndex,
+  jobs,
+  onNewJob,
+  onNext,
+  onPrev,
+  skills,
+}: WantAdsProps) => {
+  const job = jobs[jobIndex]
 
   const handleNextJob = () => {
-    setJobIndex(loop(jobIndex, 1, props.jobs.length - 1))
+    onNext()
   }
   const handlePrevJob = () => {
-    setJobIndex(loop(jobIndex, -1, props.jobs.length - 1))
+    onPrev()
   }
-  const qualifications = getQualifications(props.skills, job)
-  const canApply = isQualified(props.skills, job)
+  const qualifications = getQualifications(skills, job)
+  const canApply = isQualified(skills, job)
   const handleApply = () => {
     if (canApply) {
-      props.onNewJob(job)
+      onNewJob(job)
     }
   }
 

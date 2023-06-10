@@ -27,6 +27,7 @@ export type Qualifications = SkillMatch[]
 export type AppState = {
   day: number,
   job: Job | null,
+  jobIndex: number,
   jobs: Job[],
   running: boolean,
   skills: Skill[],
@@ -37,6 +38,7 @@ export const factoryAppState = (state: Partial<AppState> = {}): AppState => {
   return {
     day: 0,
     job: null,
+    jobIndex: 0,
     jobs: allJobs,
     running: false,
     skills: initialSkills,

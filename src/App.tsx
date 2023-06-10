@@ -16,6 +16,7 @@ const App = () => {
   const [saving, setSaving] = useState<boolean>(false)
 
   const {
+    jobIndex,
     job,
     skills,
     jobs,
@@ -97,6 +98,18 @@ const App = () => {
     }
   }, [next, running])
 
+  const handleWantAdNext = () => {
+    dispatch({
+      type: 'wantAdNext',
+    })
+  }
+  const handleWantAdPrev = () => {
+    dispatch({
+      type: 'wantAdPrev',
+    })
+  }
+
+
   return (
     <div className="App">
       {loading
@@ -137,6 +150,9 @@ const App = () => {
             jobs={jobs}
             onNewJob={handleNewJob}
             skills={skills}
+            jobIndex={jobIndex}
+            onNext={handleWantAdNext}
+            onPrev={handleWantAdPrev}
           />
         </>
         )
