@@ -1,4 +1,4 @@
-import {Job, Qualifications, Skill, SkillMatch} from "./types"
+import {Job, Qualifications, Skill, SkillMatch, Technology} from "./types"
 
 export const unique = (v: any, i: number, a: any[]): boolean => i === a.indexOf(v)
 
@@ -176,4 +176,48 @@ export const addSkillKnowledge = (skills: Skill[], name: string, value: number):
     }
     return skill
   })
+}
+
+export const by = (field: string) => (a: any, b: any) => {
+  if (a[field] < b[field]) {
+    return -1
+  } else if (a[field] > b[field]) {
+    return 1
+  }
+  return 0
+}
+
+const rand = (min: number, max: number): number => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+const getRandomWord = (length: number): string => {
+  const a = 'a'.charCodeAt(0)
+  const z = a + 25
+  const min = a
+  const max = z
+  let word = ''
+  while (word.length < length) {
+    word = word + String.fromCharCode(rand(min, max))
+  }
+  return word
+}
+
+const getNewTechName = (existing: Technology['name'][]): Technology['name'] => {
+  const length = rand(2, 4)
+  let name = ''
+  do {
+    name = getRandomWord(length)
+  } while (existing.indexOf(name) > -1)
+  return name
+}
+
+export const createTechnology = (existing: Technology[]): Technology => {
+  const name = getNewTechName(existing.map(t => t.name))
+  return {
+    name,
+    demand: rand(0, 100) / 100,
+  }
 }

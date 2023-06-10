@@ -1,3 +1,4 @@
+import {by} from "./logic"
 import SkillComp from "./SkillComp"
 import {Qualifications, Skill} from "./types"
 
@@ -11,14 +12,7 @@ const SkillSetComp = (props: SkillSetProps) => {
   return (
     <div className="SkillSetComp">
       {props.skills
-        .sort((a, b) => {
-          if (a.name < b.name) {
-            return -1
-          } else if (a.name > b.name) {
-            return 1
-          }
-          return 0
-        })
+        .sort(by('name'))
         .map((skill) => {
           const skillMatch = qualifications.find(q => q.name === skill.name)
           return (

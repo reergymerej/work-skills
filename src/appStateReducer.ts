@@ -73,5 +73,10 @@ export const appStateReducer = (
             state.jobs.length - 1,
         ),
       }
+    case 'wantAdsToggle':
+      return {
+        ...state,
+        wantAdsOpen: !state.wantAdsOpen,
+      }
   }
 }

@@ -9,7 +9,7 @@ import {loadSavedAppState, saveAppState} from './storage'
 import WantAds from './WantAds'
 import AppControls from './AppControls'
 import GameControls from './GameControls'
-
+import TechnologySection from './TechnologySection'
 
 const App = () => {
   const [appState, dispatch] = useReducer(appStateReducer, initialAppState)
@@ -70,6 +70,12 @@ const App = () => {
     next()
   }
 
+  const handleToggleWantAdds = () => {
+    dispatch({
+      type: 'wantAdsToggle',
+    })
+  }
+
   return (
     <AppContext.Provider value={appState}>
       <AppDispatchContext.Provider value={dispatch}>
@@ -101,7 +107,9 @@ const App = () => {
                   onNext={handleNext}
                 />
               </div>
-              <WantAds />
+              <button onClick={handleToggleWantAdds}>want ads</button>
+              {appState.wantAdsOpen && <WantAds /> }
+              <TechnologySection />
             </>
             )
           }

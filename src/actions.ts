@@ -18,6 +18,7 @@ type DayNext = {
   type: 'dayNext',
 }
 
+
 type JobSet = {
   type: 'jobSet',
   value: Job,
@@ -45,3 +46,6 @@ export type Action =
   | SkillsSet
   | WantAdNext
   | WantAdPrev
+  | {
+    type: 'wantAdsToggle',
+  }

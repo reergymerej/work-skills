@@ -33,6 +33,7 @@ export type AppState = {
   running: boolean,
   skills: Skill[],
   time: number,
+  wantAdsOpen: boolean,
 }
 
 export const factoryAppState = (state: Partial<AppState> = {}): AppState => {
@@ -44,6 +45,12 @@ export const factoryAppState = (state: Partial<AppState> = {}): AppState => {
     running: false,
     skills: initialSkills,
     time: Date.now(),
+    wantAdsOpen: false,
     ...state,
   }
+}
+
+export type Technology = {
+  name: string,
+  demand: number,
 }
