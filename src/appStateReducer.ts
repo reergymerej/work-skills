@@ -1,6 +1,6 @@
 import {Action} from "./actions"
 import {by, createTechnology, loop} from "./logic"
-import {AppState, factoryAppState} from "./types"
+import {AppState, factoryAppState, Technology} from "./types"
 
 export const initialAppState: AppState = factoryAppState()
 
@@ -31,11 +31,13 @@ const technologiesReducer = (
   action: Action,
 ): AppState['technologies'] => {
   switch (action.type) {
-    case 'technologyCreate':
+    case 'technologyCreate': {
+      const field: keyof Technology = 'createdDay'
       return [
         ...state,
         createTechnology(state, action.value),
-      ].sort(by('name'))
+      ].sort(by(field, -1))
+    }
     default:
       return state
   }

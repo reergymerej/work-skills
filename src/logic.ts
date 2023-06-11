@@ -178,11 +178,17 @@ export const addSkillKnowledge = (skills: Skill[], name: string, value: number):
   })
 }
 
-export const by = (field: string) => (a: any, b: any) => {
+interface ByAble {
+  [name: string]: any
+}
+export const by = <T extends ByAble>(field: string, direction = 1) => (a: T, b: T) => {
+  if (!a.hasOwnProperty(field) || !b.hasOwnProperty(field)) {
+    throw new Error(`missing "${field}"`)
+  }
   if (a[field] < b[field]) {
-    return -1
+    return -1 * direction
   } else if (a[field] > b[field]) {
-    return 1
+    return 1 * direction
   }
   return 0
 }
