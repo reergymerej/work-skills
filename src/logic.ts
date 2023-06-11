@@ -288,12 +288,20 @@ const getInDemandSkill = (tech: AppState['technologies']): Skill => {
 }
 
 const getInDemandSkills = (tech: AppState['technologies'], count: number): Skill[] => {
-  // What is the most indemand tech?
   let skills: Skill[] = []
-  while (skills.length < count) {
+  let attempts = 0
+  const MAX_ATTEMPTS = 10
+  // If there are very few skills and we want a lot and one of them is very
+  // rare, it may be hard to ever select it by chance.
+  while (skills.length < count && attempts < MAX_ATTEMPTS) {
+    const nextSkill = getInDemandSkill(tech)
+    if (skills.some(x => x.name === nextSkill.name)) {
+      attempts++
+      continue
+    }
     skills = [
       ...skills,
-      getInDemandSkill(tech),
+      nextSkill,
     ]
   }
   return skills
@@ -303,14 +311,20 @@ export const getNewJob = (
   day: AppState['day'],
   tech: AppState['technologies'],
 ): Job => {
-    const id = day + '.' + (Date.now() % 1e3)
-    const newJob: Job = {
-      basePay: 1000,
-      duration: rand(4, 52) * 7,
-      id,
-      name: id,
-      qualificationThreshold: Math.trunc(Math.random() * 100) / 100,
-      skills: getInDemandSkills(tech, 1),
-    }
-    return newJob
+  if (tech.length === 0) {
+    throw new Error('unable to create job with no tech')
+  }
+  const techMin = Math.min(2, tech.length)
+  const techMax = Math.min(3, tech.length)
+  const techCount = rand(techMin, techMax)
+  const id = day + '.' + (Date.now() % 1e3)
+  const newJob: Job = {
+    basePay: 1000,
+    duration: rand(4, 52) * 7,
+    id,
+    name: id,
+    qualificationThreshold: Math.trunc(Math.random() * 100) / 100,
+    skills: getInDemandSkills(tech, techCount),
+  }
+  return newJob
 }
