@@ -49,3 +49,7 @@ export type Action =
   | {
     type: 'wantAdsToggle',
   }
+  | {
+    type: 'technologyCreate',
+    value: AppState['day'],
+  }

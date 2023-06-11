@@ -1,19 +1,20 @@
-import {useState} from 'react'
-import {by, createTechnology} from '../logic'
-import {Technology} from '../types'
+import {useContext} from 'react'
+import {AppContext, AppDispatchContext} from '../AppContext'
 import './TechnologySection.css'
 
-const intialTechnologies: Technology[] = []
 
 const TechnologySection = () => {
-  const [technologies, setTechnologies] = useState<Technology[]>(intialTechnologies)
+  const {
+    day,
+    technologies,
+  } = useContext(AppContext)
+  const dispatch = useContext(AppDispatchContext)
 
   const handleCreateTechnology = () => {
-    const newTechnology: Technology = createTechnology(technologies)
-    setTechnologies([
-      ...technologies,
-      newTechnology,
-    ].sort(by('name')))
+    dispatch({
+      type: 'technologyCreate',
+      value: day,
+    })
   }
 
   return (
@@ -28,7 +29,9 @@ const TechnologySection = () => {
             <li
               key={technology.name}
             >
-              {technology.name} {technology.demand}
+              <div className="name">{technology.name}</div>
+              <div className="age">{day - technology.createdDay}</div>
+              <div className="demand">{technology.demand}</div>
             </li>
           )
         })}

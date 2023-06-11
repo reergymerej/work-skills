@@ -1,4 +1,4 @@
-import {Job, Qualifications, Skill, SkillMatch, Technology} from "./types"
+import {AppState, Job, Qualifications, Skill, SkillMatch, Technology} from "./types"
 
 export const unique = (v: any, i: number, a: any[]): boolean => i === a.indexOf(v)
 
@@ -214,10 +214,14 @@ const getNewTechName = (existing: Technology['name'][]): Technology['name'] => {
   return name
 }
 
-export const createTechnology = (existing: Technology[]): Technology => {
+export const createTechnology = (
+  existing: Technology[],
+  day: AppState['day'],
+): Technology => {
   const name = getNewTechName(existing.map(t => t.name))
   return {
-    name,
+    createdDay: day,
     demand: rand(0, 100) / 100,
+    name,
   }
 }

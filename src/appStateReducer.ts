@@ -1,5 +1,5 @@
 import {Action} from "./actions"
-import {loop} from "./logic"
+import {by, createTechnology, loop} from "./logic"
 import {AppState, factoryAppState} from "./types"
 
 export const initialAppState: AppState = factoryAppState()
@@ -21,6 +21,21 @@ const jobReducer = (
         duration,
       }
     }
+    default:
+      return state
+  }
+}
+
+const technologiesReducer = (
+  state: AppState['technologies'],
+  action: Action,
+): AppState['technologies'] => {
+  switch (action.type) {
+    case 'technologyCreate':
+      return [
+        ...state,
+        createTechnology(state, action.value),
+      ].sort(by('name'))
     default:
       return state
   }
@@ -78,5 +93,10 @@ export const appStateReducer = (
         ...state,
         wantAdsOpen: !state.wantAdsOpen,
       }
+    case 'technologyCreate':
+      return {
+      ...state,
+      technologies: technologiesReducer(state.technologies, action),
+    }
   }
 }
