@@ -249,7 +249,7 @@ const getInDemandTech = (tech: AppState['technologies']): Technology => {
     return acc + value.demand
   }, 0)
   const field: keyof Technology = 'demand'
-  const orderedByDemand = tech.sort(by(field, 1))
+  const orderedByDemand = [...tech].sort(by(field, 1))
   let stackedList: Stacked[] = []
   orderedByDemand.forEach((technology, index) => {
     // must round to avoid floating point issues
