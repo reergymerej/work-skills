@@ -5,6 +5,7 @@ export const initialSkills: Skill[] = [
 ]
 
 export const allJobs: Job[] = [
+  /*
   {
     name: 'help desk',
     skills: [
@@ -173,6 +174,7 @@ export const allJobs: Job[] = [
     basePay: 175000,
     duration: Infinity,
   },
+ */
 ]
 
 export const skillNames: string[] = allJobs

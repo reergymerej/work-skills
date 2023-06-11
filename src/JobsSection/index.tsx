@@ -1,40 +1,38 @@
 import {useContext} from 'react'
 import {AppContext, AppDispatchContext} from '../AppContext'
 import Button from '../Button'
-import './TechnologySection.css'
 
-
-const TechnologySection = () => {
+const JobsSection = () => {
   const {
     day,
-    technologies,
+    jobs,
   } = useContext(AppContext)
   const dispatch = useContext(AppDispatchContext)
 
   const handleCreateTechnology = () => {
     dispatch({
-      type: 'technologyCreate',
+      type: 'jobCreate',
       value: day,
     })
   }
 
   return (
-    <div className="TechnologySection">
+    <div>
       <div className="font-bold text-xl">
-        Technology
+        Jobs
       </div>
       <Button
         onClick={handleCreateTechnology}
       >create</Button>
       <ul>
-        {technologies.map(technology => {
+        {jobs.map(job => {
           return (
             <li
-              key={technology.name}
+              key={job.id}
             >
-              <div className="name">{technology.name}</div>
-              <div className="age">{day - technology.createdDay}</div>
-              <div className="demand">{technology.demand}</div>
+              <div className="name">
+                {job.name} - {job.id}
+              </div>
             </li>
           )
         })}
@@ -43,4 +41,5 @@ const TechnologySection = () => {
   )
 }
 
-export default TechnologySection
+export default JobsSection
+

@@ -9,10 +9,11 @@ type SkillSetProps = {
 
 const SkillSetComp = (props: SkillSetProps) => {
   const qualifications = props.qualifications || []
+  const field: keyof Skill = 'name'
   return (
     <div className="SkillSetComp">
       {props.skills
-        .sort(by('name'))
+        .sort(by(field))
         .map((skill) => {
           const skillMatch = qualifications.find(q => q.name === skill.name)
           return (

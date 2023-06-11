@@ -23,8 +23,7 @@ const WantAds = () => {
       type: 'wantAdPrev',
     })
   }
-  const qualifications = getQualifications(skills, job)
-  const canApply = isQualified(skills, job)
+  const canApply = !!job && isQualified(skills, job)
 
   const handleApply = () => {
     if (canApply) {
@@ -43,19 +42,26 @@ const WantAds = () => {
       <h2>
         want ads
       </h2>
-      <div className="controls">
-        <div className="buttons">
-          <button onClick={handlePrevJob}>prev</button>
-          <button onClick={handleApply} disabled={!canApply}>apply</button>
-          <button onClick={handleNextJob}>next</button>
-        </div>
-      </div>
-      <div>
-        <JobComp
-          job={job}
-          qualifications={qualifications}
-        />
-      </div>
+      {job
+        ? (
+          <>
+            <div className="controls">
+              <div className="buttons">
+                <button onClick={handlePrevJob}>prev</button>
+                <button onClick={handleApply} disabled={!canApply}>apply</button>
+                <button onClick={handleNextJob}>next</button>
+              </div>
+            </div>
+            <div>
+              <JobComp
+                job={job}
+                qualifications={getQualifications(skills, job)}
+              />
+            </div>
+          </>
+        )
+        : 'no jobs'
+      }
     </div>
   )
 }

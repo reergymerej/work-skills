@@ -10,6 +10,7 @@ import WantAds from './WantAds'
 import AppControls from './AppControls'
 import GameControls from './GameControls'
 import TechnologySection from './TechnologySection'
+import JobsSection from './JobsSection'
 
 const App = () => {
   const [appState, dispatch] = useReducer(appStateReducer, initialAppState)
@@ -109,7 +110,10 @@ const App = () => {
               </div>
               <button onClick={handleToggleWantAdds}>want ads</button>
               {appState.wantAdsOpen && <WantAds /> }
-              <TechnologySection />
+              <div className="grid gap-x-4 grid-cols-2 m-4 p-4 bg-blue-100">
+                <TechnologySection />
+                <JobsSection />
+              </div>
             </>
             )
           }
