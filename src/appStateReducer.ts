@@ -1,6 +1,6 @@
 import {Action} from "./actions"
-import {by, createTechnology, loop} from "./logic"
-import {AppState, factoryAppState, Job, Technology} from "./types"
+import {by, createTechnology, getNewJob, loop} from "./logic"
+import {AppState, factoryAppState, Technology} from "./types"
 
 export const initialAppState: AppState = factoryAppState()
 
@@ -41,6 +41,27 @@ const technologiesReducer = (
     default:
       return state
   }
+}
+
+// all jobs, not current job
+const jobsReducer = (
+  state: AppState['jobs'],
+  action: Action,
+  allState: AppState,
+): AppState['jobs'] => {
+  switch (action.type) {
+    case 'jobCreate': {
+      return [
+        ...state,
+        getNewJob(
+          allState['day'],
+          allState['technologies'],
+        ),
+      ]
+    }
+  }
+
+  return state
 }
 
 export const appStateReducer = (
@@ -101,21 +122,13 @@ export const appStateReducer = (
       technologies: technologiesReducer(state.technologies, action),
     }
     case 'jobCreate': {
-      const id = action.value + '.' + (Date.now() % 1e3)
-      const newJob: Job = {
-        basePay: 1000,
-        duration: Infinity,
-        id,
-        name: id,
-        qualificationThreshold: 0.2,
-        skills: [],
-      }
       return {
         ...state,
-        jobs: [
-          ...state.jobs,
-          newJob,
-        ],
+        jobs: jobsReducer(
+          state['jobs'],
+          action,
+          state,
+        ),
       }
     }
   }

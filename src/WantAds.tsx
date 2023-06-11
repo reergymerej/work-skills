@@ -34,9 +34,6 @@ const WantAds = () => {
     }
   }
 
-  console.log('want ads exist')
-  // TODO: load jobs dynaically
-
   return (
     <div className="WantAds">
       <h2>

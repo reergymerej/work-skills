@@ -231,3 +231,86 @@ export const createTechnology = (
     name,
   }
 }
+
+type Stacked = {
+  min: number,
+  max: number,
+  name: string,
+}
+
+const getPickFromStacked = (stackedList: Stacked[], pick: number): Stacked | undefined => {
+  return stackedList.find(stacked => {
+    return pick >= stacked.min && pick <= stacked.max
+  })
+}
+
+const getInDemandTech = (tech: AppState['technologies']): Technology => {
+  const totalDemand = tech.reduce((acc, value) => {
+    return acc + value.demand
+  }, 0)
+  const field: keyof Technology = 'demand'
+  const orderedByDemand = tech.sort(by(field, 1))
+  let stackedList: Stacked[] = []
+  orderedByDemand.forEach((technology, index) => {
+    // must round to avoid floating point issues
+    const previousMax = index === 0
+      ? 0
+      : stackedList[index - 1].max
+    const adjustedDemand = Math.round(technology.demand * 100)
+    stackedList = [
+      ...stackedList,
+      {
+        min: previousMax + 1,
+        max: previousMax + adjustedDemand,
+        name: technology.name,
+      }
+    ]
+  })
+  const pickValue = rand(1, totalDemand * 100)
+  const picked = getPickFromStacked(stackedList, pickValue)
+  if (picked === undefined) {
+    throw new Error('pick failed')
+  }
+  const inDemandTech = tech.find(x => x.name === picked.name)
+  if (inDemandTech === undefined) {
+    throw new Error('could not find tech')
+  }
+  return inDemandTech
+}
+
+const getInDemandSkill = (tech: AppState['technologies']): Skill => {
+  const inDemandTech: Technology = getInDemandTech(tech)
+  return {
+    name: inDemandTech.name,
+    knowledge: 0,
+    experience: 0,
+  }
+}
+
+const getInDemandSkills = (tech: AppState['technologies'], count: number): Skill[] => {
+  // What is the most indemand tech?
+  let skills: Skill[] = []
+  while (skills.length < count) {
+    skills = [
+      ...skills,
+      getInDemandSkill(tech),
+    ]
+  }
+  return skills
+}
+
+export const getNewJob = (
+  day: AppState['day'],
+  tech: AppState['technologies'],
+): Job => {
+    const id = day + '.' + (Date.now() % 1e3)
+    const newJob: Job = {
+      basePay: 1000,
+      duration: rand(4, 52) * 7,
+      id,
+      name: id,
+      qualificationThreshold: Math.trunc(Math.random() * 100) / 100,
+      skills: getInDemandSkills(tech, 1),
+    }
+    return newJob
+}
