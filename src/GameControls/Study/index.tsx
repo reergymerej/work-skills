@@ -1,6 +1,5 @@
 import {useContext} from "react"
 import {AppContext, AppDispatchContext} from "../../AppContext"
-import {skillNames} from "../../data"
 import {addSkillKnowledge} from "../../logic"
 import './Study.css'
 
@@ -8,6 +7,7 @@ const Study = () => {
   const dispatch = useContext(AppDispatchContext)
   const {
     skills,
+    technologies,
   } = useContext(AppContext)
   const handleStudyClick = (skillName: string) => () => {
     const newSkills = addSkillKnowledge(skills, skillName, 10)
@@ -20,11 +20,12 @@ const Study = () => {
   return (
     <div className="Study">
         <div className="buttons">
-          {skillNames.map(skillName => {
+          {technologies.map(technonogy => {
+            const {name} = technonogy
             return (
               <button
-                key={skillName}
-                onClick={handleStudyClick(skillName)}>{skillName}</button>
+                key={name}
+                onClick={handleStudyClick(name)}>{name}</button>
             )
           })}
         </div>
