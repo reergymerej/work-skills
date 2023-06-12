@@ -31,7 +31,7 @@ const JobsSection = () => {
               key={job.id}
             >
               <div className="name">
-                {job.name} - {job.id}
+                {job.name} - {job.duration}
               </div>
             </li>
           )

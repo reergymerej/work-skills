@@ -1,7 +1,6 @@
 import {useCallback, useEffect, useReducer, useState} from 'react'
 import './App.css'
 import {AppContext, AppDispatchContext} from './AppContext'
-import {appStateReducer, initialAppState} from './appStateReducer'
 import CurrentJob from './CurrentJob'
 import {getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
@@ -12,6 +11,7 @@ import GameControls from './GameControls'
 import TechnologySection from './TechnologySection'
 import JobsSection from './JobsSection'
 import Button from './Button'
+import {appStateReducer, initialAppState} from './reducer'
 
 const App = () => {
   const [appState, dispatch] = useReducer(appStateReducer, initialAppState)

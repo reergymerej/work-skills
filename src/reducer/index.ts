@@ -1,6 +1,6 @@
-import {Action} from "./actions"
-import {addSkillKnowledge, by, createTechnology, getNewJob, getNewSkills, loop} from "./logic"
-import {AppState, factoryAppState, Technology} from "./types"
+import {Action} from "../actions"
+import {addSkillKnowledge, by, createTechnology, getNewJob, getNewSkills, loop} from "../logic"
+import {AppState, factoryAppState, Technology} from "../types"
 
 export const initialAppState: AppState = factoryAppState()
 
@@ -146,3 +146,4 @@ export const appStateReducer = (
     }
   }
 }
+

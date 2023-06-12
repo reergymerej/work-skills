@@ -1,5 +1,3 @@
-import {allJobs, initialSkills} from "./data"
-
 export type SkillSet = {
   skills: Skill[],
 }
@@ -43,9 +41,9 @@ export const factoryAppState = (state: Partial<AppState> = {}): AppState => {
     day: 0,
     job: null,
     jobIndex: 0,
-    jobs: allJobs,
+    jobs: [],
     running: false,
-    skills: initialSkills,
+    skills: [],
     technologies: [],
     time: Date.now(),
     wantAdsOpen: false,
