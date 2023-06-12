@@ -6,7 +6,7 @@ type ButtonProps = React.PropsWithChildren & {
 const Button = ({
   onClick,
   children,
-  color = 'blue',
+  color = 'violet',
 }: ButtonProps) => {
   const className=`bg-${color}-500 hover:bg-${color}-700 text-white font-bold py-1 px-4`
   return (
