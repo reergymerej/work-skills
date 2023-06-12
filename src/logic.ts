@@ -278,23 +278,38 @@ const getInDemandTech = (tech: AppState['technologies']): Technology => {
   return inDemandTech
 }
 
-const getInDemandSkill = (tech: AppState['technologies']): Skill => {
+const getKnowledgeRequirement = (tech: Technology): number => {
+  return rand(0, 90)
+}
+
+const getExperienceRequirement = (tech: Technology, age: number): number => {
+  return rand(0, age)
+}
+
+const getInDemandSkill = (
+  tech: AppState['technologies'],
+  day: AppState['day'],
+): Skill => {
   const inDemandTech: Technology = getInDemandTech(tech)
   return {
     name: inDemandTech.name,
-    knowledge: 0,
-    experience: 0,
+    knowledge: getKnowledgeRequirement(inDemandTech),
+    experience: getExperienceRequirement(inDemandTech, day - inDemandTech.createdDay),
   }
 }
 
-const getInDemandSkills = (tech: AppState['technologies'], count: number): Skill[] => {
+const getInDemandSkills = (
+  tech: AppState['technologies'],
+  count: number,
+  day: AppState['day'],
+): Skill[] => {
   let skills: Skill[] = []
   let attempts = 0
   const MAX_ATTEMPTS = 10
   // If there are very few skills and we want a lot and one of them is very
   // rare, it may be hard to ever select it by chance.
   while (skills.length < count && attempts < MAX_ATTEMPTS) {
-    const nextSkill = getInDemandSkill(tech)
+    const nextSkill = getInDemandSkill(tech, day)
     if (skills.some(x => x.name === nextSkill.name)) {
       attempts++
       continue
@@ -324,7 +339,7 @@ export const getNewJob = (
     id,
     name: id,
     qualificationThreshold: Math.trunc(Math.random() * 100) / 100,
-    skills: getInDemandSkills(tech, techCount),
+    skills: getInDemandSkills(tech, techCount, day),
   }
   return newJob
 }
