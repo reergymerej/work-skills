@@ -1,6 +1,7 @@
 import {useContext} from "react"
 import {AppDispatchContext} from "./AppContext"
 import './AppControls.css'
+import Button from "./Button"
 
 type AppControlsProps = {
   saving: boolean,
@@ -23,9 +24,9 @@ const AppControls = ({
 
   return (
     <div className="AppControls">
-      <div className="buttons">
-        <button onClick={handleReset}>reset</button>
-        <button onClick={handleSave} disabled={saving}>save</button>
+      <div className="Buttons">
+        <Button onClick={handleReset}>reset</Button>
+        <Button onClick={handleSave} disabled={saving}>save</Button>
       </div>
     </div>
   )

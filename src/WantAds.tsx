@@ -1,5 +1,6 @@
 import {useContext} from "react"
 import {AppContext, AppDispatchContext} from "./AppContext"
+import Button from "./Button"
 import JobComp from "./Job"
 import {getQualifications, isQualified} from "./logic"
 
@@ -43,10 +44,10 @@ const WantAds = () => {
         ? (
           <>
             <div className="controls">
-              <div className="buttons">
-                <button onClick={handlePrevJob}>prev</button>
-                <button onClick={handleApply} disabled={!canApply}>apply</button>
-                <button onClick={handleNextJob}>next</button>
+              <div className="Buttons">
+                <Button onClick={handlePrevJob}>prev</Button>
+                <Button onClick={handleApply} disabled={!canApply}>apply</Button>
+                <Button onClick={handleNextJob}>next</Button>
               </div>
             </div>
             <div>

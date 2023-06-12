@@ -2,6 +2,7 @@ import {useContext} from 'react'
 import './GameControls.css'
 import {AppContext, AppDispatchContext} from '../AppContext'
 import Study from './Study'
+import Button from '../Button'
 
 
 type GameControlsProps = {
@@ -27,9 +28,9 @@ const GameControls = ({
 
   return (
       <div className="GameControls">
-        <div className="buttons">
-          <button onClick={handleNext}>next</button>
-          <button onClick={handleRunClick}>{running ? 'stop' : 'run'}</button>
+        <div className="Buttons">
+          <Button onClick={handleNext}>next</Button>
+          <Button onClick={handleRunClick}>{running ? 'stop' : 'run'}</Button>
         </div>
         <Study />
       </div>

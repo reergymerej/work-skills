@@ -1,17 +1,30 @@
+import cx from 'classnames'
+
 type ButtonProps = React.PropsWithChildren & {
-  onClick?: () => void,
   color?: string,
+  disabled?: boolean,
+  onClick?: () => void,
 }
 
 const Button = ({
-  onClick,
   children,
   color = 'violet',
+  disabled,
+  onClick,
 }: ButtonProps) => {
-  const className=`bg-${color}-500 hover:bg-${color}-700 text-white font-bold py-1 px-4`
+  const className = cx(
+    {
+      [`bg-${color}-500 hover:bg-${color}-700 text-white`]: !disabled,
+      [`bg-${color}-500 text-${color}-700`]: disabled,
+    },
+    [
+      'font-bold py-1 px-4',
+    ],
+  )
   return (
     <button
       className={className}
+      disabled={disabled}
       onClick={onClick}
     >
       {children}

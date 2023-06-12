@@ -1,5 +1,6 @@
 import {useContext} from "react"
 import {AppContext, AppDispatchContext} from "../../AppContext"
+import Button from "../../Button"
 import {addSkillKnowledge} from "../../logic"
 import './Study.css'
 
@@ -19,13 +20,13 @@ const Study = () => {
 
   return (
     <div className="Study">
-        <div className="buttons">
+        <div className="Buttons">
           {technologies.map(technonogy => {
             const {name} = technonogy
             return (
-              <button
+              <Button
                 key={name}
-                onClick={handleStudyClick(name)}>{name}</button>
+                onClick={handleStudyClick(name)}>{name}</Button>
             )
           })}
         </div>
