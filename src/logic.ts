@@ -322,6 +322,12 @@ const getInDemandSkills = (
   return skills
 }
 
+const getBasePay = (skills: Skill[]): number => {
+  const knowledge = skills.reduce((acc, value) => acc + value.knowledge, 0)
+  const experience = skills.reduce((acc, value) => acc + value.experience, 0)
+  return knowledge * 1000 + experience * 10
+}
+
 export const getNewJob = (
   day: AppState['day'],
   tech: AppState['technologies'],
@@ -333,13 +339,17 @@ export const getNewJob = (
   const techMax = Math.min(3, tech.length)
   const techCount = rand(techMin, techMax)
   const id = day + '.' + (Date.now() % 1e3)
+  const skills = getInDemandSkills(tech, techCount, day)
+  const qualificationThreshold = Math.trunc(Math.random() * 100) / 100
+  const duration = rand(4, 52) * 7
+  const basePay = getBasePay(skills)
   const newJob: Job = {
-    basePay: 1000,
-    duration: rand(4, 52) * 7,
+    basePay,
+    duration,
     id,
     name: id,
-    qualificationThreshold: Math.trunc(Math.random() * 100) / 100,
-    skills: getInDemandSkills(tech, techCount, day),
+    qualificationThreshold,
+    skills,
   }
   return newJob
 }

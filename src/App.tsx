@@ -3,7 +3,7 @@ import './App.css'
 import {AppContext, AppDispatchContext} from './AppContext'
 import {appStateReducer, initialAppState} from './appStateReducer'
 import CurrentJob from './CurrentJob'
-import {getNewSkills, getQualifications} from './logic'
+import {getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {loadSavedAppState, saveAppState} from './storage'
 import WantAds from './WantAds'
@@ -25,15 +25,10 @@ const App = () => {
   } = appState
 
   const next = useCallback(() => {
-    const newSkills = getNewSkills(skills, job)
-    dispatch({
-      type: 'skillsSet',
-      value: newSkills,
-    })
     dispatch({
       type: 'dayNext',
     })
-  }, [job, skills])
+  }, [])
 
 
   useEffect(() => {

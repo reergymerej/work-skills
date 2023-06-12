@@ -1,5 +1,5 @@
 import {Action} from "./actions"
-import {by, createTechnology, getNewJob, loop} from "./logic"
+import {addSkillKnowledge, by, createTechnology, getNewJob, getNewSkills, loop} from "./logic"
 import {AppState, factoryAppState, Technology} from "./types"
 
 export const initialAppState: AppState = factoryAppState()
@@ -59,6 +59,16 @@ const jobsReducer = (
         ),
       ]
     }
+    case 'dayNext': {
+      const nextJobs = state.map(job => {
+        const duration = (job.duration || Infinity) - 1
+        return {
+          ...job,
+          duration,
+        }
+      }).filter(x => x.duration > 0)
+      return nextJobs
+    }
   }
 
   return state
@@ -73,11 +83,6 @@ export const appStateReducer = (
       return {
         ...state,
         ...action.value,
-      }
-    case 'skillsSet':
-      return {
-        ...state,
-        skills: action.value,
       }
     case 'runningToggle':
       return {
@@ -94,6 +99,8 @@ export const appStateReducer = (
         ...state,
         day: state.day + 1,
         job: jobReducer(state.job, action),
+        jobs: jobsReducer(state.jobs, action, state),
+        skills: getNewSkills(state.skills, state.job),
       }
     case 'reset':
       return {
@@ -129,6 +136,12 @@ export const appStateReducer = (
           action,
           state,
         ),
+      }
+    }
+    case 'study': {
+      return {
+        ...state,
+        skills: addSkillKnowledge(state.skills, action.value, 10),
       }
     }
   }

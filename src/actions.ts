@@ -1,13 +1,8 @@
-import {AppState, Job, Skill} from "./types"
+import {AppState, Job, Technology} from "./types"
 
 type Loaded = {
   type: 'loaded',
   value: AppState,
-}
-
-type SkillsSet = {
-  type: 'skillsSet',
-  value: Skill[],
 }
 
 type RunningToggle = {
@@ -43,7 +38,6 @@ export type Action =
   | Loaded
   | Reset
   | RunningToggle
-  | SkillsSet
   | WantAdNext
   | WantAdPrev
   | {
@@ -56,4 +50,8 @@ export type Action =
   | {
     type: 'jobCreate',
     value: AppState['day'],
+  }
+  | {
+    type: 'study',
+    value: Technology['name'],
   }
