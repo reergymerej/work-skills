@@ -354,20 +354,3 @@ export const getNewJob = (
   return newJob
 }
 
-const reduceDemand = (demand: number): number => {
-  const x = Math.random()
-  const willReduce = x <= 0.4
-  if (willReduce) {
-    return demand - (Math.random() / 1000)
-  }
-  return demand
-}
-
-export const ageTech = (tech: Technology[]): Technology[] => {
-  return tech.map((t) => {
-    return {
-      ...t,
-      demand: reduceDemand(t.demand),
-    }
-  }).filter(x => x.demand > 0)
-}

@@ -1,6 +1,7 @@
 import {Action} from "../actions"
-import {addSkillKnowledge, getNewJob, getNewSkills, loop} from "../logic"
+import {addSkillKnowledge, getNewSkills, loop} from "../logic"
 import {AppState, factoryAppState} from "../types"
+import jobsReducer from "./jobs"
 import technologiesReducer from "./technologies"
 
 export const initialAppState: AppState = factoryAppState()
@@ -27,37 +28,6 @@ const jobReducer = (
   }
 }
 
-
-// all jobs, not current job
-const jobsReducer = (
-  state: AppState['jobs'],
-  action: Action,
-  allState: AppState,
-): AppState['jobs'] => {
-  switch (action.type) {
-    case 'jobCreate': {
-      return [
-        ...state,
-        getNewJob(
-          allState['day'],
-          allState['technologies'],
-        ),
-      ]
-    }
-    case 'dayNext': {
-      const nextJobs = state.map(job => {
-        const duration = (job.duration || Infinity) - 1
-        return {
-          ...job,
-          duration,
-        }
-      }).filter(x => x.duration > 0)
-      return nextJobs
-    }
-  }
-
-  return state
-}
 
 export const appStateReducer = (
   state: AppState,
@@ -86,7 +56,7 @@ export const appStateReducer = (
         job: jobReducer(state.job, action),
         jobs: jobsReducer(state.jobs, action, state),
         skills: getNewSkills(state.skills, state.job),
-        technologies: technologiesReducer(state.technologies, action),
+        technologies: technologiesReducer(state.technologies, action, state),
       }
     case 'reset':
       return {
@@ -114,7 +84,7 @@ export const appStateReducer = (
       // be called by this one
       return {
       ...state,
-      technologies: technologiesReducer(state.technologies, action),
+      technologies: technologiesReducer(state.technologies, action, state),
     }
     case 'jobCreate': {
       return {

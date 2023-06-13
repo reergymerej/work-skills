@@ -45,7 +45,6 @@ export type Action =
   }
   | {
     type: 'technologyCreate',
-    value: AppState['day'],
   }
   | {
     type: 'jobCreate',

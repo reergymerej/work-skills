@@ -1,7 +1,7 @@
 import {useContext} from 'react'
 import {AppContext, AppDispatchContext} from '../AppContext'
 import Button from '../Button'
-import './TechnologySection.css'
+import {Technology} from '../types'
 
 
 const TechnologySection = () => {
@@ -14,7 +14,13 @@ const TechnologySection = () => {
   const handleCreateTechnology = () => {
     dispatch({
       type: 'technologyCreate',
-      value: day,
+    })
+  }
+
+  const handleStudyClick = (name: Technology['name']) => {
+    dispatch({
+      type: 'study',
+      value: name,
     })
   }
 
@@ -31,10 +37,16 @@ const TechnologySection = () => {
           return (
             <li
               key={technology.name}
+              className="p-1 flex justify-start gap-x-4"
             >
-              <div className="name">{technology.name}</div>
+              <Button
+                color="teal"
+                extraClassName="mr-4"
+                onClick={() => handleStudyClick(technology.name)}
+              >study</Button>
+              <div className="font-bold w-24">{technology.name}</div>
               <div className="age">{day - technology.createdDay}</div>
-              <div className="demand">{technology.demand}</div>
+              <div className="demand text-xs">{technology.demand}</div>
             </li>
           )
         })}

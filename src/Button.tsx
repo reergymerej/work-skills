@@ -3,6 +3,7 @@ import cx from 'classnames'
 type ButtonProps = React.PropsWithChildren & {
   color?: string,
   disabled?: boolean,
+  extraClassName?: string,
   onClick?: () => void,
 }
 
@@ -10,6 +11,7 @@ const Button = ({
   children,
   color = 'violet',
   disabled,
+  extraClassName,
   onClick,
 }: ButtonProps) => {
   const className = cx(
@@ -20,6 +22,7 @@ const Button = ({
     [
       'font-bold py-1 px-4',
     ],
+    extraClassName,
   )
   return (
     <button
