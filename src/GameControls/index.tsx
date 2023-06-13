@@ -1,7 +1,6 @@
 import {useContext} from 'react'
 import './GameControls.css'
 import {AppContext, AppDispatchContext} from '../AppContext'
-import Study from './Study'
 import Button from '../Button'
 
 
@@ -32,7 +31,6 @@ const GameControls = ({
           <Button onClick={handleNext}>next</Button>
           <Button onClick={handleRunClick}>{running ? 'stop' : 'run'}</Button>
         </div>
-        <Study />
       </div>
   )
 }

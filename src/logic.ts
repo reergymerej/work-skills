@@ -8,7 +8,7 @@ const getSkillIndex = (skills: Skill[], name: string): number => {
   })
 }
 
-const getSkillByName = (skills: Skill[], name: string): Skill | undefined => {
+export const getSkillByName = (skills: Skill[], name: string): Skill | undefined => {
   return skills.find(skill => {
     return skill.name === name
   })
@@ -308,16 +308,17 @@ const getInDemandSkills = (
   const MAX_ATTEMPTS = 10
   // If there are very few skills and we want a lot and one of them is very
   // rare, it may be hard to ever select it by chance.
-  while (skills.length < count && attempts < MAX_ATTEMPTS) {
-    const nextSkill = getInDemandSkill(tech, day)
-    if (skills.some(x => x.name === nextSkill.name)) {
-      attempts++
-      continue
-    }
-    skills = [
-      ...skills,
-      nextSkill,
-    ]
+  while (skills.length < count && attempts++ < MAX_ATTEMPTS) {
+    try {
+      const nextSkill = getInDemandSkill(tech, day)
+      if (skills.some(x => x.name === nextSkill.name)) {
+        continue
+      }
+      skills = [
+        ...skills,
+        nextSkill,
+      ]
+    } catch {}
   }
   return skills
 }

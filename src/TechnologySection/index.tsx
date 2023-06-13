@@ -1,6 +1,7 @@
 import {useContext} from 'react'
 import {AppContext, AppDispatchContext} from '../AppContext'
 import Button from '../Button'
+import {getSkillByName} from '../logic'
 import {Technology} from '../types'
 
 
@@ -8,14 +9,9 @@ const TechnologySection = () => {
   const {
     day,
     technologies,
+    skills,
   } = useContext(AppContext)
   const dispatch = useContext(AppDispatchContext)
-
-  const handleCreateTechnology = () => {
-    dispatch({
-      type: 'technologyCreate',
-    })
-  }
 
   const handleStudyClick = (name: Technology['name']) => {
     dispatch({
@@ -29,11 +25,9 @@ const TechnologySection = () => {
       <div className="font-bold text-xl">
         Technology
       </div>
-      <Button
-        onClick={handleCreateTechnology}
-      >create</Button>
       <ul>
         {technologies.map(technology => {
+          const skill = getSkillByName(skills, technology.name)
           return (
             <li
               key={technology.name}
@@ -47,6 +41,9 @@ const TechnologySection = () => {
               <div className="font-bold w-24">{technology.name}</div>
               <div className="age">{day - technology.createdDay}</div>
               <div className="demand text-xs">{technology.demand}</div>
+              <div>
+                {skill && skill.knowledge}
+              </div>
             </li>
           )
         })}

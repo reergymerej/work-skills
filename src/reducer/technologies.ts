@@ -28,7 +28,7 @@ const createTechAndAdd = (
     return [
       ...tech,
       createTechnology(tech, day),
-    ].sort(by(field, -1))
+    ].sort(by(field))
 }
 
 const technologiesReducer = (

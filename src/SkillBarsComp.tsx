@@ -7,13 +7,16 @@ const SkillBarsComp = (props: SkillBarsCompProps) => {
   return (
     <>
       <div>
-        {props.name} {Math.trunc(props.ratio * 100)}%
+        {props.name}
+        <span className="text-xs ml-1">
+          {Math.round(props.value)} | {Math.trunc(props.ratio * 100)}%
+        </span>
       </div>
-        <div className={`value ${props.name}`}
-          style={{
-            width: `${props.value}px`,
-          }}
-        />
+      <div className={`value ${props.name}`}
+        style={{
+          width: `${props.value}px`,
+        }}
+      />
     </>
   )
 }
