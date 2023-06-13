@@ -1,7 +1,4 @@
-const colorsByMeaning = {
-  'experience': 'green',
-  'knowledge': 'blue',
-}
+import {colorsByMeaning} from "./global"
 
 type SkillBarsCompProps = {
   value: number,

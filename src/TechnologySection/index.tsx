@@ -1,6 +1,7 @@
 import {useContext} from 'react'
 import {AppContext, AppDispatchContext} from '../AppContext'
 import Button from '../Button'
+import {colorsByMeaning} from '../global'
 import {getSkillByName} from '../logic'
 import {Technology} from '../types'
 
@@ -38,8 +39,17 @@ const TechnologySection = () => {
                 onClick={() => handleStudyClick(technology.name)}
               >study</Button>
               <div className="font-bold w-24">{technology.name}</div>
-              <div>
-                {skill && skill.knowledge} {skill && Math.round(skill.experience)}
+              <div className="flex gap-x-2">
+                {skill &&
+                  <span className={`bg-${colorsByMeaning.knowledge}-400 px-1`}>
+                    {skill.knowledge}
+                  </span>
+                }
+                {skill &&
+                  <span className={`bg-${colorsByMeaning.experience}-400 px-1`}>
+                     {skill && Math.round(skill.experience)}
+                  </span>
+                }
               </div>
             </li>
           )

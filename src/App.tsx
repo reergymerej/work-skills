@@ -106,7 +106,7 @@ const App = () => {
               </div>
               <Button onClick={handleToggleWantAdds}>want ads</Button>
               {appState.wantAdsOpen && <WantAds /> }
-              <div className="grid gap-x-4 grid-cols-2 m-4 p-4 bg-blue-100">
+              <div className="grid gap-x-4 grid-cols-2 m-4 p-4 bg-gray-100">
                 <TechnologySection />
                 <JobsSection />
               </div>
