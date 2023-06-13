@@ -1,9 +1,16 @@
+const colorsByMeaning = {
+  'experience': 'green',
+  'knowledge': 'blue',
+}
+
 type SkillBarsCompProps = {
   value: number,
-  name: string,
+  name: 'experience' | 'knowledge',
   ratio: number,
 }
+
 const SkillBarsComp = (props: SkillBarsCompProps) => {
+  const color: string = colorsByMeaning[props.name]
   return (
     <>
       <div>
@@ -12,7 +19,7 @@ const SkillBarsComp = (props: SkillBarsCompProps) => {
           {Math.round(props.value)} | {Math.trunc(props.ratio * 100)}%
         </span>
       </div>
-      <div className={`value ${props.name}`}
+      <div className={`value bg-${color}-500`}
         style={{
           width: `${props.value}px`,
         }}

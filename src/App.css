@@ -18,14 +18,6 @@
   line-height: 1.5em;
 }
 
-.Skill .value.experience {
-  background: green;
-}
-
-.Skill .value.knowledge {
-  background: blue;
-}
-
 .Skill .value.knowledge.ratio {
   background: initial;
 }

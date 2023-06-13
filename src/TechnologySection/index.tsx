@@ -7,7 +7,6 @@ import {Technology} from '../types'
 
 const TechnologySection = () => {
   const {
-    day,
     technologies,
     skills,
   } = useContext(AppContext)
@@ -39,10 +38,8 @@ const TechnologySection = () => {
                 onClick={() => handleStudyClick(technology.name)}
               >study</Button>
               <div className="font-bold w-24">{technology.name}</div>
-              <div className="age">{day - technology.createdDay}</div>
-              <div className="demand text-xs">{technology.demand}</div>
               <div>
-                {skill && skill.knowledge}
+                {skill && skill.knowledge} {skill && Math.round(skill.experience)}
               </div>
             </li>
           )
