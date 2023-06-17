@@ -355,3 +355,17 @@ export const getNewJob = (
   return newJob
 }
 
+export const currency = (x: number): string => {
+  let asString = (x + '').split('').reverse().join('')
+  let sections: string[] = []
+  for (let i = 0; i < asString.length; i += 3) {
+    const end = Math.min(i + 3, asString.length)
+    const section = asString.substring(i, end)
+    sections = [
+      ...sections,
+      section,
+    ]
+  }
+  return sections.join(',').split('').reverse().join('')
+}
+
