@@ -1,8 +1,6 @@
 import {useContext} from 'react'
-import './GameControls.css'
 import {AppContext, AppDispatchContext} from '../AppContext'
 import Button from '../Button'
-
 
 type GameControlsProps = {
   onNext: () => void,
@@ -26,11 +24,9 @@ const GameControls = ({
   }
 
   return (
-      <div className="GameControls">
-        <div className="Buttons">
-          <Button onClick={handleNext}>next</Button>
-          <Button onClick={handleRunClick}>{running ? 'stop' : 'run'}</Button>
-        </div>
+      <div>
+        <Button onClick={handleNext}>next</Button>
+        <Button onClick={handleRunClick}>{running ? 'stop' : 'run'}</Button>
       </div>
   )
 }

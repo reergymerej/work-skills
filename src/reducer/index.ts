@@ -74,11 +74,6 @@ export const appStateReducer = (
             state.jobs.length - 1,
         ),
       }
-    case 'wantAdsToggle':
-      return {
-        ...state,
-        wantAdsOpen: !state.wantAdsOpen,
-      }
     case 'technologyCreate':
       // TODO: split this so reducers can handle on their own without needing to
       // be called by this one

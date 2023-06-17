@@ -20,9 +20,6 @@ const JobsSection = () => {
 
   return (
     <div>
-      <div className="font-bold text-xl">
-        Jobs
-      </div>
       <ul>
         {jobs.map(job => {
           const canApply = !!job && isQualified(skills, job)

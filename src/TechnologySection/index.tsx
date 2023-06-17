@@ -21,10 +21,7 @@ const TechnologySection = () => {
   }
 
   return (
-    <div className="TechnologySection">
-      <div className="font-bold text-xl">
-        Technology
-      </div>
+    <div>
       <ul>
         {technologies.map(technology => {
           const skill = getSkillByName(skills, technology.name)

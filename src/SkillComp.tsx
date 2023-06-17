@@ -12,7 +12,7 @@ const SkillComp = (props: SkillCompProps) => {
   const experienceRatio = (props.skillMatch && props.skillMatch.experience) || 0
   return (
         <div className="Skill">
-          <div className="name">
+          <div className="font-bold">
             {props.name}
           </div>
           <div className="values">

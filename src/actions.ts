@@ -41,9 +41,6 @@ export type Action =
   | WantAdNext
   | WantAdPrev
   | {
-    type: 'wantAdsToggle',
-  }
-  | {
     type: 'technologyCreate',
   }
   | {
