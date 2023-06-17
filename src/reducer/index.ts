@@ -44,11 +44,18 @@ export const appStateReducer = (
         ...state,
         running: !state.running,
       }
-    case 'jobSet':
+    case 'jobSet': {
       return {
         ...state,
         job: jobReducer(state.job, action),
       }
+    }
+    case 'jobFocus': {
+      return {
+        ...state,
+        jobFocusedId: action.value,
+      }
+    }
     case 'dayNext':
       return {
         ...state,

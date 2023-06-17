@@ -1,7 +1,5 @@
 import {useCallback, useEffect, useReducer, useState} from 'react'
-import './App.css'
 import {AppContext, AppDispatchContext} from './AppContext'
-import CurrentJob from './CurrentJob'
 import {getQualifications} from './logic'
 import SkillSetComp from './SkillSetComp'
 import {loadSavedAppState, saveAppState} from './storage'
@@ -10,6 +8,7 @@ import GameControls from './GameControls'
 import TechnologySection from './TechnologySection'
 import JobsSection from './JobsSection'
 import {appStateReducer, initialAppState} from './reducer'
+import JobComp from './Job'
 
 type ColumnSectionProps = React.PropsWithChildren & {
   title: string,
@@ -39,9 +38,13 @@ const App = () => {
 
   const {
     job,
-    skills,
+    jobFocusedId,
     running,
+    skills,
+    jobs,
   } = appState
+
+  const jobFocused = jobs.find(j => j.id === jobFocusedId)
 
   const next = useCallback(() => {
     dispatch({
@@ -129,10 +132,12 @@ const App = () => {
                     className="col-span-2"
                     title="job details"
                   >
-                    <CurrentJob
-                      skills={skills}
-                      job={job}
-                    />
+                    {jobFocused &&
+                      <JobComp
+                        job={jobFocused}
+                        qualifications={getQualifications(skills, jobFocused)}
+                      />
+                    }
                   </ColumnSection>
 
                   <ColumnSection title="skills">

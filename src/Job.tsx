@@ -2,6 +2,20 @@ import {getQualificationRating} from "./logic"
 import SkillSetComp from "./SkillSetComp"
 import {Job, Qualifications} from "./types"
 
+const currency = (x: number): string => {
+  let asString = (x + '').split('').reverse().join('')
+  let sections: string[] = []
+  for (let i = 0; i < asString.length; i += 3) {
+    const end = Math.min(i + 3, asString.length)
+    const section = asString.substring(i, end)
+    sections = [
+      ...sections,
+      section,
+    ]
+  }
+  return sections.join(',').split('').reverse().join('')
+}
+
 type JobCompProps = {
   job: Job,
   qualifications: Qualifications,
@@ -10,12 +24,11 @@ type JobCompProps = {
 const JobComp = (props: JobCompProps) => {
   const qualificationRating = getQualificationRating(props.qualifications)
   return (
-    <div className="Job">
+    <div>
       <div>
-        <div className="info">
-          <div className="name">{props.job.name}</div>
+        <div>
           <div>
-            base pay: ${props.job.basePay}
+            base pay: ${currency(props.job.basePay)}
           </div>
           <div>
             required qual: {props.job.qualificationThreshold}

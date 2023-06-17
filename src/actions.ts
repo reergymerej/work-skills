@@ -51,3 +51,7 @@ export type Action =
     type: 'study',
     value: Technology['name'],
   }
+  | {
+    type: 'jobFocus',
+    value: Job['id'],
+  }

@@ -8,6 +8,7 @@ const JobsSection = () => {
   const {
     jobs,
     skills,
+    jobFocusedId,
   } = useContext(AppContext)
   const dispatch = useContext(AppDispatchContext)
 
@@ -18,11 +19,19 @@ const JobsSection = () => {
     })
   }
 
+  const handleJobClick = (job: Job) => {
+    dispatch({
+      type: 'jobFocus',
+      value: job.id,
+    })
+  }
+
   return (
     <div>
       <ul>
         {jobs.map(job => {
           const canApply = !!job && isQualified(skills, job)
+          const isFocused = jobFocusedId && jobFocusedId === job.id
           return (
             <li
               key={job.id}
@@ -34,8 +43,12 @@ const JobsSection = () => {
                 onClick={() => handleApplyClick(job)}
                 disabled={!canApply}
               >apply</Button>
-              <div className="name">
-                {job.name} - {job.duration}
+              <div
+                className={`cursor-pointer hover:underline ${isFocused ? 'font-bold' : ''}`}
+                onClick={() => handleJobClick(job)}
+              >
+                  {job.name}
+                 - {job.duration}
               </div>
             </li>
           )
